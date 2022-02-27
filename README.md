@@ -1,6 +1,6 @@
 # <center>Vinci.js</center>
 
-<center><img src="media://crack.png" alt="drawing" width="300"/></center>
+<center><img src="./images/crack.png" alt="drawing" width="300"/></center>
 
 Vinci is a 2D displacement discontinuity boundary element method based on [Crouch and Starfield, 1983, Boundary element methods in solid mechanics](https://onlinelibrary.wiley.com/doi/abs/10.1002/nme.1620191014).
  
@@ -31,5 +31,5 @@ const sol = new Solution(model)
 const stresses = sol.stress( new Array(100).fill(0).map( _ => Math.random()*3) ) )
 ```
 <br><br>
-<center><img src="media://joint.png" alt="drawing" width="300"/></center>
+<center><img src="./images/joint.png" alt="drawing" width="300"/></center>
 <center><h3>Plotted Sxy</h3></center>
