@@ -1,7 +1,7 @@
 import { Model } from "../bem/Model"
 
-export type MessageCallback = (s: string) => any 
-export type StopCallback = () => boolean 
+export type StopCallback      = () => boolean
+export type MessageCallback   = (s: string) => any
 export type IterationCallback = (convergence: number, iteration: number) => any
 
 /**

@@ -120,21 +120,24 @@ export function addVec(a: Vectord, result: Vectord) {
     })
 }
 
-// Performes: `result = Bx + b`
-export function multAdd(B: Matrix, x: Vectord, b: Vectord, result: Vectord) {
-    multVec(B, x, result)
+// Performs: `result = Bx + b`
+export function multAdd(A: Matrix, x: Vectord, b: Vectord, result: Vectord) {
+    multVec(A, x, result)
+    // console.log(result)
     addVec(b, result)
+    // console.log(result)
+    // console.log('-----------')
 }
 
 /**
  * Usage
  * ```js
  * const lu = new Lu()
- * lu.beginConstruction(10)
+ * lu.beginConstruction(10); {
  *     lu.setValue(0,0, 0.457)
  *     lu.setValue(0,1, 1.233)
  *     ...
- * lu.endConstruction()
+ * }; lu.endConstruction()
  * 
  * lu.evaluate(b1)
  * lu.evaluate(b2)
@@ -147,6 +150,9 @@ export class Lu {
     private indx: Vectord
     private a_: Matrix
 
+    /**
+     * Start the definition of a squared matrix `size*size`
+     */
     beginConstruction(size: number) {
         if (this.isContructing) {
             throw new Error('Lu is already in construction mode')
@@ -161,6 +167,12 @@ export class Lu {
         }
     }
 
+    /**
+     * Set the value of the matrix entry (i,j), where `0<=i,j<size`
+     * @param i Raw index between `0` and `size-1`
+     * @param j Column index between `0` and `size-1`
+     * @param value The value of the entry (i,j) in the matrix
+     */
     setValue(i: number, j: number, value: number) {
         if (this.isContructing === false) {
             throw new Error('missing call to beginConstruction')
@@ -169,6 +181,9 @@ export class Lu {
         this.a_[i][j] = value
     }
 
+    /**
+     * Finish the construction of the matrix and perform the lu decomposition
+     */
     endContruction() {
         if (this.isContructing === false) {
             throw new Error('missing call to beginConstruction')
@@ -182,9 +197,9 @@ export class Lu {
      * Evaluate M.b and put the result in b itself
      * @param b
      */
-     evaluate(b: Vectord) {
+     evaluate(b: Vectord): void {
         if (this.isContructing) {
-            throw new Error('Lu is in construction mode')
+            throw new Error('Lu is in construction mode, cannot evaluate.')
         }
 
         let ii=0,ip=0
@@ -204,6 +219,7 @@ export class Lu {
             }
             b[i - 1] = sum
         }
+
         for (let i=this.n_; i>=1; i--) {
             sum = b[i - 1]
             for (let j=i+1; j<=this.n_; j++) {
@@ -215,12 +231,17 @@ export class Lu {
 
     /**
      * Force the garbage collection ?
+     * Release the memory of the matrix and 
      */
     release() {
         if (this.isContructing) {
-            throw new Error('Lu is in construction mode. Cannot release')
+            throw new Error('Lu is in construction mode. Cannot release.')
         }
-        this.a_ = undefined
+
+        this.n_   = 0
+        this.a_   = undefined
+        this.indx = undefined
+        this.isContructing = false
     }
 
     /**

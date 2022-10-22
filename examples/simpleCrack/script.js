@@ -66,7 +66,7 @@ function simpleCrack() {
 
 function inclinedCrack() {
     const fault = new vinci.Fault([0,0, 1,1]) // one segment
-    fault.bcType  = ['t','t']
+    fault.bcType  = ['b','b']
     fault.burgers = [0,1]
 
     const model = new vinci.Model()
@@ -86,7 +86,7 @@ const bounds = model.bounds
 const L = Math.max(bounds.xLength, bounds.yLength) * 3
 const grid = generateRectangle({
     a: L, b: L,
-    na:300, nb: 300,
+    na: 100, nb: 100,
     center: [...bounds.center, 0],
     badFct: (x,y) => model.tooClose([x,y], 0.1) // 0.1 for enEchelon
 })

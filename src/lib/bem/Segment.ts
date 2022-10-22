@@ -1,4 +1,4 @@
-import { Displ, Point, StressCoeff, DisplCoeff, Stress, Traction, Vector } from '../types'
+import { Displ, Point, StressCoeff, DisplCoeff, Stress, Traction, Vector, TractionCoeff } from '../types'
 import { Material } from '../bem/Material'
 import { add, copy, normVec, scale } from '../math'
 import { BBox } from '../utils/BBox'
@@ -30,7 +30,7 @@ export enum Axis {
  * @category Core
  */
 export class Segment {
-    private c: Point // center
+    private c     : Point // center
     private sin = 0
     private cos = 0
     private l2  = 0
@@ -157,15 +157,15 @@ export class Segment {
         }
     }
 
-    influenceCoeffs(): StressCoeff {
-        const {displ, stress} = this.displAndStressCoeff(this.c)
+    tractionCoeffs(p: Point): TractionCoeff {
+        const {displ, stress} = this.displAndStressCoeff(p)
         const sin    = this.sin
         const cos    = this.cos
         const cos2   = cos**2
         const sin2   = sin**2
         const sincos = sin*cos
 
-        const c = [[0,0], [0,0], [0,0]] as StressCoeff
+        const c = [[0,0], [0,0]] as TractionCoeff
         if (this.bcType_[0] == BC.Traction) {
             c[0][0] = (stress[1][0]-stress[0][0])*sincos + stress[2][0]*(cos2-sin2)
             c[0][1] = (stress[1][1]-stress[0][1])*sincos + stress[2][1]*(cos2-sin2)
@@ -184,6 +184,7 @@ export class Segment {
             c[1][1] = -displ[0][1]*sin + displ[1][1]*cos
         }
 
+        console.log(c)
         return c
     }
 

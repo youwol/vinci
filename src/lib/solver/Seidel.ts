@@ -4,6 +4,19 @@ import { applyRemotes } from "../functions"
 import { System } from "./System"
 
 /**
+ * @example
+ * ```js
+ * const solver = new Seidel()
+ * 
+ * solver.messageCB  ( msg => console.log(msg) )
+ * solver.warningCB  ( msg => console.log(msg) )
+ * solver.errorCB    ( msg => console.log(msg) )
+ * solver.iterationCB( (conv, iter) => console.log('iteration', iter, ':', conv) )
+ * 
+ * solver.setup(model)
+ * solver.run()
+ * ```
+ * 
  * @category Solvers
  */
 export class Seidel implements Solver {

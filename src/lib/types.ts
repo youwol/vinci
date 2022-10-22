@@ -42,6 +42,12 @@ export type Vectord  = number[]
 export type DisplCoeff  = [[number,number],[number,number]]
 
 /**
+ * The traction coefficient matrix
+ * @category Math
+ */
+export type TractionCoeff = [[number,number],[number,number]]
+
+/**
  * The stress coefficient matrix
  * @category Math
  */

@@ -2,7 +2,7 @@ import { Vectord, Matrix } from "../types"
 import { Model } from "../bem/Model"
 import { Segment, BC } from "../bem/Segment"
 import { allocMatrix, Lu, multAdd, norm2 } from "../math"
-import { Displ, Traction } from ".."
+// import { Displ, Traction } from ".."
 
 /**
  * @hidden
@@ -27,10 +27,14 @@ export class System {
 
     solve(): number {
         if (this.dof_ === 0) return
+        // console.log(this.x_)
 
         // Compute B_
         this.getTotalTraction(this.x_)
+        // console.log(this.x_)
         this.applyTics(this.x_)
+        // console.log(this.x_)
+        // console.log('-----------------')
 
         // solve
         this.lu.evaluate(this.x_)
@@ -51,6 +55,8 @@ export class System {
                 }
             })
         })
+
+        // console.log(this.dof_, this.dof2_)
 
         this.b_      = new Array(this.dof_).fill(0)
         this.cstRhs_ = new Array(this.dof_).fill(0)
@@ -81,7 +87,19 @@ export class System {
             if (e1.dof > 0) {         
                 let col = 0
                 this.ts_.forEach( e2 => { // <------------- loop e2
-                    const Tij = e2.stressCoeff(e1.center) // e2 influence e1
+
+                    /*
+                    WARNING
+                    return stress: [
+                        [sxxds, sxxdn],
+                        [syyds, syydn],
+                        [sxyds, sxydn]
+                    ]
+                    */
+                    // const Tij = e2.stressCoeff(e1.center) // e2 influence e1
+                    const Tij = e2.tractionCoeffs(e1.center) // e2 influence e1
+                    // console.log(e1, e2, Tij)
+
                     rplus = 0
                     for (let i = 0; i<2; ++i) {
                         if (e1.bcType(i) === BC.Traction) {
@@ -105,7 +123,10 @@ export class System {
                 row += rplus
             }
         }) // e1
+
+        // console.log(this.lu)
         this.lu.endContruction()
+        
 
         // -----------------------------------------------------------------
         // Building of the other matrix Bij that must NOT be inverted

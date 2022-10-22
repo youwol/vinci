@@ -24,6 +24,8 @@ export class Model {
         })
     }
 
+    get material() {return this.material_}
+
     get dof() {
         return this.faults_.reduce( (cur,fault) => cur+fault.dof, 0)
     }

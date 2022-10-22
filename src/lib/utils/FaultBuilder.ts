@@ -8,11 +8,24 @@ import { Vector, Vectord } from "../types"
 /**
  * This class allows to build incrementally a fault composed of segments,
  * or to set the contiguous segments using a Serie (position of points)
+ * @example
+ * ```js
+ * import { Model, FaultBuilder } from '@youwol/vinci'
+ * 
+ * const model   = new Model()
+ * const builder = new FaultBuilder()
+ * builder
+ *    .addPoint([0,0])
+ *    .addPoint([1,1])
+ *    .subdivide(10)
+ *    .setBcType('tt')
+ *    .addTo(model)
+ * ```
  * @category Utils
  */
 export class FaultBuilder {
-    private prev: Vector = undefined
-    private fault_: Fault = new Fault()
+    private prev  : Vector = undefined
+    private fault_: Fault  = new Fault()
 
     get fault() {return this.fault_}
 
@@ -42,7 +55,7 @@ export class FaultBuilder {
      *      .addPoint([0,0])
      *      .addPoint([1,0])
      *      .addPoint([2,1])
-     *      .setBcType(BC.bb)
+     *      .setBcType('bb')
      *      .setBurger([1,0])
      *      .addTo(model)
      * // or model.addFault(builder.fault)
@@ -59,8 +72,7 @@ export class FaultBuilder {
 
     setPoints(p: Vectord | Serie) {
         if (Array.isArray(p)) {
-            const s = Serie.create({array: p, itemSize: 2})
-            s.forEach( P => this.addPoint(P) )
+            Serie.create({array: p, itemSize: 2}).forEach( P => this.addPoint(P) )
         }
         else {
             p.forEach( P => this.addPoint(P) )
@@ -73,7 +85,7 @@ export class FaultBuilder {
      */
     subdivide(n: number = 2) {
         if (n<2) {
-            throw new Error('n must be >= 2')
+            return this
         }
 
         const fault    = new Fault()
@@ -85,6 +97,7 @@ export class FaultBuilder {
             for (let i=0; i<n; ++i) {
                 end = add(end, step)
                 fault.addElement( new Segment(start, end))
+                start = end
             }
         })
         this.fault_ = fault
