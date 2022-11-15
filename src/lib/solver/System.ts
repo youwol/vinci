@@ -1,7 +1,8 @@
-import { Vectord, Matrix } from "../types"
+import { Vectord, Matrix, Traction, Displ } from "../types"
 import { Model } from "../bem/Model"
 import { Segment, BC } from "../bem/Segment"
 import { allocMatrix, Lu, multAdd, norm2 } from "../math"
+import { Fault } from "../bem"
 // import { Displ, Traction } from ".."
 
 /**
@@ -19,26 +20,24 @@ export class System {
     dof_  = 0
     dof2_ = 0
 
-    constructor(es: Segment[], model: Model) {
+    constructor(es: Segment[], model: Model, private fault: Fault) {
         this.ts_ = [...es]
         this.dof_ = es.reduce( (cur, ee) => cur + ee.dof, 0 )
         this.initialize(model)
+        
+        // Have to check that es are really part of fault!!!
     }
 
     solve(): number {
         if (this.dof_ === 0) return
-        // console.log(this.x_)
 
         // Compute B_
         this.getTotalTraction(this.x_)
-        // console.log(this.x_)
-        this.applyTics(this.x_)
-        // console.log(this.x_)
-        // console.log('-----------------')
+        this.applyTics(this.x_ as Traction)
 
         // solve
         this.lu.evaluate(this.x_)
-        this.applyDics(this.x_)
+        this.applyDics(this.x_ as Displ)
 
         return this.setSolution()
     }
@@ -56,25 +55,25 @@ export class System {
             })
         })
 
-        // console.log(this.dof_, this.dof2_)
-
-        this.b_      = new Array(this.dof_).fill(0)
-        this.cstRhs_ = new Array(this.dof_).fill(0)
-        this.x_      = new Array(this.dof2_).fill(0)
+        this.b_      = new Array(this.dof_ ).fill(0)
+        this.cstRhs_ = new Array(this.dof_ ).fill(0)
+        // this.x_      = new Array(this.dof2_).fill(0)
+        this.x_      = new Array(this.dof_).fill(0)
         this.B_    = allocMatrix(this.dof_, this.dof2_)
-        //this.tmpB_ = new Array(this.dof_).fill(0)
 
+        // -------------------------
+        // Right hand side of Ax = b
+        // -------------------------
         let eqnNum = 0
-        model.faults.forEach( fault => {
-            fault.elements.forEach( e => {
-                for (let i = 0; i<2; ++i) {
-                    if (e.bcType(i) === BC.Traction) {
-                        this.b_[eqnNum++] = -e.bcValue(i) // initial value of b (constant terms=initial tractions)
-                    } else {
-                        e.setBurger(i, e.bcValue(i)) // set bc values as Burgers if necessary
-                    }
+        this.ts_.forEach( e => {
+            for (let i = 0; i<2; ++i) {
+                if (e.bcType(i) === BC.Traction) {
+                    this.b_[eqnNum++] = -e.bcValue(i) // initial value of b (constant terms = initial tractions = Neumann)
                 }
-            })
+                else {
+                    e.setBurger(i, e.bcValue(i)) // set bc values as Burgers if necessary (Dirichlet)
+                }
+            }
         })
 
         // -----------------------------------------------------------------
@@ -83,23 +82,11 @@ export class System {
         this.lu.beginConstruction(this.dof_) // alloc
         let rplus, cplus
         let row = 0
-        this.ts_.forEach( e1 => {        // <------------- loop e1
+        this.ts_.forEach( e1 => {        // <------------- loop e1, the main element
             if (e1.dof > 0) {         
                 let col = 0
                 this.ts_.forEach( e2 => { // <------------- loop e2
-
-                    /*
-                    WARNING
-                    return stress: [
-                        [sxxds, sxxdn],
-                        [syyds, syydn],
-                        [sxyds, sxydn]
-                    ]
-                    */
-                    // const Tij = e2.stressCoeff(e1.center) // e2 influence e1
-                    const Tij = e2.tractionCoeffs(e1.center) // e2 influence e1
-                    // console.log(e1, e2, Tij)
-
+                    const Tij = e2.tractionIcAt(e1.center) // e2 influence e1
                     rplus = 0
                     for (let i = 0; i<2; ++i) {
                         if (e1.bcType(i) === BC.Traction) {
@@ -124,7 +111,6 @@ export class System {
             }
         }) // e1
 
-        // console.log(this.lu)
         this.lu.endContruction()
         
 
@@ -133,21 +119,21 @@ export class System {
         // NOTE: rows are "self" and columns are "model-self"
         // -----------------------------------------------------------------
         row = 0 ; 
-        this.ts_.forEach( e1 => {
+        this.ts_.forEach( e1 => {  // Main element from this system
             if (e1.dof>0) {
                 let col = 0 ;
-                this.rts_.forEach( e2 => {
-                    const Tij = e2.stressCoeff(e1.center) // e2 influence e1
+                this.rts_.forEach( e2 => { // All the other elements **in the model**
+                    const Tij = e2.tractionIcAt(e1.center) // e2 influence e1
                     rplus = 0
                     for (let i = 0; i<2; ++i) {
                         if (e1.bcType(i) === BC.Traction) {
                             cplus = 0
                             for (let j = 0; j<2; ++j) {
                                 if (e2.bcType(j) === BC.Traction) {
-                                    this.B_[row+rplus][col+cplus] = -Tij[i][j] // unknown for e2 goes to B_
+                                    this.B_[row+rplus][col+cplus] = -Tij[i][j] // Neumann for e2 goes to B_
                                     ++cplus
                                 } else {
-                                    let v = Tij[i][j]*e2.burger[j]
+                                    let v = Tij[i][j]*e2.burger[j] // Dirichlet for e2 in cst rhs
                                     this.cstRhs_[row+rplus] -= v
                                 }
                             }
@@ -193,7 +179,7 @@ export class System {
             }
         })
 
-        // Update the RHS as Burgers from rts_ are varying...
+        // Update the RHS as Burgers since rts_ is varying...
         const z = new Array(this.dof2_).fill(0)
         let index = 0
         this.rts_.forEach( e2 => {
@@ -207,13 +193,11 @@ export class System {
         multAdd(this.B_, z, this.b_, sol)
     }
 
-    private applyDics(u: Vectord): Vectord {
-        // TODO
-        return u
+    private applyDics(u: Displ): Displ {
+        return this.fault.dics.reduce( (cur, dic) => dic.do(cur), u)
     }
 
-    private applyTics(t: Vectord): Vectord {
-        // TODO
-        return t
+    private applyTics(t: Traction): Traction {
+        return this.fault.tics.reduce( (cur, tic) => tic.do(cur), t)
     }
 }

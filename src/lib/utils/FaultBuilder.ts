@@ -4,6 +4,7 @@ import { Fault } from "../bem/Fault"
 import { add, create, scale } from "../math"
 import { Axis, Segment, BC } from "../bem/Segment"
 import { Vector, Vectord } from "../types"
+import { Dic, Tic } from "../bem"
 
 /**
  * This class allows to build incrementally a fault composed of segments,
@@ -111,6 +112,16 @@ export class FaultBuilder {
 
     setBurger(burgers: Serie | Vectord) {
         this.fault_.burgers = burgers
+        return this
+    }
+
+    addTic(tic: Tic) {
+        this.fault_.addTic(tic)
+        return this
+    }
+
+    addDic(dic: Dic) {
+        this.fault_.addDic(dic)
         return this
     }
 

@@ -139,8 +139,8 @@ export function multAdd(A: Matrix, x: Vectord, b: Vectord, result: Vectord) {
  *     ...
  * }; lu.endConstruction()
  * 
- * lu.evaluate(b1)
- * lu.evaluate(b2)
+ * const s1 = lu.evaluate([1,2,3,8,5,3,7,6,0,1])
+ * const s2 = lu.evaluate([7,3,2,4,3,2,9,5,0,8])
  * ```
  */
 export class Lu {
@@ -177,6 +177,12 @@ export class Lu {
         if (this.isContructing === false) {
             throw new Error('missing call to beginConstruction')
         }
+        if (i >= this.n_) {
+            throw new Error(`i (${i}) is out of range (${this.n_})`)
+        }
+        if (j >= this.n_) {
+            throw new Error(`j (${i}) is out of range (${this.n_})`)
+        }
 
         this.a_[i][j] = value
     }
@@ -194,10 +200,10 @@ export class Lu {
     }
 
     /**
-     * Evaluate M.b and put the result in b itself
+     * Evaluate M.b and return the result as a new Vectord
      * @param b
      */
-     evaluate(b: Vectord): void {
+     evaluate(b: Vectord): Vectord {
         if (this.isContructing) {
             throw new Error('Lu is in construction mode, cannot evaluate.')
         }
@@ -205,28 +211,32 @@ export class Lu {
         let ii=0,ip=0
         let sum=0
 
+        const bb = [...b]
+
         for (let i=1; i<=this.n_; i++) {
             ip    = this.indx[i - 1]
-            sum   = b[ip - 1]
-            b[ip - 1] = b[i - 1]
+            sum   = bb[ip - 1]
+            bb[ip - 1] = bb[i - 1]
             if (ii) {
                 for (let j=ii; j<=i-1; j++) {
-                    sum -= this.a_[i - 1][j - 1] * b[j - 1]
+                    sum -= this.a_[i - 1][j - 1] * bb[j - 1]
                 }
             }
             else {
                 if (sum) ii = i
             }
-            b[i - 1] = sum
+            bb[i - 1] = sum
         }
 
         for (let i=this.n_; i>=1; i--) {
-            sum = b[i - 1]
+            sum = bb[i - 1]
             for (let j=i+1; j<=this.n_; j++) {
-                sum -= this.a_[i - 1][j - 1] * b[j - 1]
+                sum -= this.a_[i - 1][j - 1] * bb[j - 1]
             }
-            b[i - 1] = sum / this.a_[i - 1][i - 1]
+            bb[i - 1] = sum / this.a_[i - 1][i - 1]
         }
+
+        return bb
     }
 
     /**

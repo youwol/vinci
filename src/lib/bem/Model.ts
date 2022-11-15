@@ -14,6 +14,11 @@ export class Model {
 
     get faults(): Fault[] {return this.faults_}
 
+    clear() {
+        this.faults_  = []
+        this.remotes_ = []
+    }
+
     setMaterial(poisson: number, young: number, density: number) {
         this.material_.poisson = poisson
         this.material_.young   = young

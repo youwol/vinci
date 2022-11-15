@@ -25,7 +25,7 @@ export type Traction = [number, number]
 export type Normal = [number, number]
 
 /**
- * Stress in 2D is defined as `[xx, yy, xy]`
+ * Stress in 2D is defined as `[xx, xy, yy]`
  * @category Math
  */
 export type Stress   = [number, number, number]

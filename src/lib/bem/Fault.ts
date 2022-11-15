@@ -13,8 +13,8 @@ export class Fault {
     private segs_: Segment[] = []
     private bc: [BC, BC] = [BC.Traction, BC.Burger]
     private material_: Material = undefined
-    private tics_: Tic[]
-    private dics_: Dic[]
+    private tics_: Tic[] = []
+    private dics_: Dic[] = []
 
     constructor(points: Vectord | Serie = undefined) {
         if (points) {
@@ -49,8 +49,12 @@ export class Fault {
      * }))
      * ```
      */
-    addTic(tic: Tic) { this.tics_.push(tic) }
-    get tics() { return this.tics_ }
+    addTic(tic: Tic) {
+        this.tics_.push(tic)
+    }
+    get tics() {
+        return this.tics_
+    }
 
     /**
      * Add a displacement inequality constraint
@@ -66,8 +70,12 @@ export class Fault {
      * }))
      * ```
      */
-    addDic(dic: Dic) { this.dics_.push(dic) }
-    get dics() { return this.dics_ }
+    addDic(dic: Dic) {
+        this.dics_.push(dic)
+    }
+    get dics() {
+        return this.dics_
+    }
 
     /**
      * Check if point p is too close to an element

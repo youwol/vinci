@@ -35,13 +35,13 @@ function enEchelon() {
         .setPoints([-1,-1, 1,1, 2, 1])
         .subdivide(30)
         .setBurger([0,1])
-        .setBcTypes(['b', 'b'])
+        .setBcType('bb')
         .addTo(model)
         .reset()
         .setPoints([1,0.5, 2,0.5, 4, 2.5])
         .subdivide(30)
         .setBurger([0,1])
-        .setBcType(vinci.BC.bb)
+        .setBcType('bb')
         .addTo(model)
 
     return model
@@ -77,7 +77,7 @@ function inclinedCrack() {
 
 // -----------------------------------------------
 
-const model = inclinedCrack()
+const model = enEchelon()
 console.log('nb segments', model.faults.reduce( (cur, f) => cur + f.elements.length, 0 ))
 
 const solution = new vinci.Solution(model)

@@ -9,19 +9,21 @@ import { Stress, Normal, Traction, Point } from "./types"
  * @category Remote
  */
  export function applyRemotes(model: Model) {
+    
     // 1) reset bc values
     model.faults.forEach( (fault: Fault) => {
         fault.elements.forEach( (e: Segment) => {
             e.setBcValues([0,0])
         })
     })
+
     // 2) and set bc values by cumulating the remote effects
     model.remotes.forEach( (remote: BaseRemoteStress) => {
         model.faults.forEach( (fault: Fault) => {
             fault.elements.forEach( (e: Segment) => {
                 const stress = remote.at(e.center)
                 const t =  cauchy(stress, e.normal)
-                e.addBcValues( t )
+                e.addBcValues(t)
             })
         })
     })
@@ -32,7 +34,11 @@ import { Stress, Normal, Traction, Point } from "./types"
  * @category Remote
  */
  export function cauchy(stress: Stress, n: Normal): Traction {
-    return [stress[0]*n[0]+stress[2]*n[1], stress[2]*n[0]+stress[1]*n[1]]
+    // Remember: stress is organized as [xx, xy, yy]
+    return [
+        stress[0]*n[0] + stress[1]*n[1],
+        stress[1]*n[0] + stress[2]*n[1]
+    ]
 }
 
 /**

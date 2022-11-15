@@ -35,7 +35,7 @@ export class Segment {
     private cos = 0
     private l2  = 0
     private bcType_: [BC,BC] = [BC.Traction, BC.Traction]
-    private u: Displ = [0, 0]
+    private burger_: Displ = [0, 0] // The Burger's vector (see Poly3D, iBem3D and Arch)
     private bcValue_: Traction = [0, 0]
     private mat: Material = undefined
 
@@ -44,16 +44,17 @@ export class Segment {
         const l  = normVec(this.begin, this.end)
         this.sin = (this.end[1] - this.begin[1]) / l
         this.cos = (this.end[0] - this.begin[0]) / l
-        this.l2  = l/2
+        this.l2  = l / 2
     }
 
     get center(): Point {return this.c}
     get normal(): Point {return [-this.sin, this.cos]} // check
 
-    get burger(): Displ {return this.u}
-    set burger(u: Displ) {copy(u, this.u)}
+    get burger(): Displ {return this.burger_}
+    set burger(u: Displ) {copy(u, this.burger_)}
+    
     setBurger(i: number, value: number) {
-        this.u[i] = value
+        this.burger_[i] = value
     }
 
     bcType(i: number) {return this.bcType_[i]}
@@ -77,16 +78,12 @@ export class Segment {
      * Check if point p is too close to this element
      */
     tooClose(p: Point, delta=1): boolean {
-        if (distToSegment2(p, this.begin, this.end) < delta**2 * this.l2**2) return true
-        // if (normVec(this.c, p) < this.l2) return true
-        // if (normVec(this.begin, p) < this.l2) return true
-        // if (normVec(this.end, p) < this.l2) return true
-        return false
+        return distToSegment2(p, this.begin, this.end) < delta**2 * this.l2**2
     }
 
     toLocal(p: Vector): Vector {
         return [
-            (p[0] - this.c[0]) * this.cos + (p[1] - this.c[1]) * this.sin,
+             (p[0] - this.c[0]) * this.cos + (p[1] - this.c[1]) * this.sin,
             -(p[0] - this.c[0]) * this.sin + (p[1] - this.c[1]) * this.cos
         ]
     }
@@ -102,8 +99,8 @@ export class Segment {
         const displ = this.displ(this.c)
         const usneg =  displ[0]*this.cos + displ[1]*this.sin // in global csys
         const unneg = -displ[0]*this.sin + displ[1]*this.cos
-        const uspos = usneg - this.u[0]
-        const unpos = unneg - this.u[1]
+        const uspos = usneg - this.burger_[0]
+        const unpos = unneg - this.burger_[1]
         return {
             neg: [usneg, unneg],
             pos: [uspos, unpos]
@@ -123,8 +120,8 @@ export class Segment {
 
     displ(p: Point): Displ {
         const displ = this.displCoeff(p)
-        const bx  = this.u[0]
-        const by  = this.u[1]
+        const bx  = this.burger_[0]
+        const by  = this.burger_[1]
         const ux  = displ[0][0]*bx + displ[0][1]*by
         const uy  = displ[1][0]*bx + displ[1][1]*by
         return [ux, uy]
@@ -132,8 +129,8 @@ export class Segment {
 
     stress(p: Point): Stress {
         const stress = this.stressCoeff(p)
-        const bx  = this.u[0]
-        const by  = this.u[1]
+        const bx  = this.burger_[0]
+        const by  = this.burger_[1]
         const sxx = stress[0][0]*bx + stress[0][1]*by
         const syy = stress[1][0]*bx + stress[1][1]*by
         const sxy = stress[2][0]*bx + stress[2][1]*by
@@ -143,10 +140,10 @@ export class Segment {
 
     displAndStress(p: Point): {displ: Displ, stress: Stress} {
         const {displ, stress} = this.displAndStressCoeff(p)
-        const bx  = this.u[0]
-        const by  = this.u[1]
-        const ux  = displ[0][0]*bx  + displ[0][1]*by
-        const uy  = displ[1][0]*bx  + displ[1][1]*by
+        const bx  = this.burger_[0]
+        const by  = this.burger_[1]
+        const ux  = displ[0][0] *bx + displ[0][1] *by
+        const uy  = displ[1][0] *bx + displ[1][1] *by
         const sxx = stress[0][0]*bx + stress[0][1]*by
         const syy = stress[1][0]*bx + stress[1][1]*by
         const sxy = stress[2][0]*bx + stress[2][1]*by
@@ -157,38 +154,53 @@ export class Segment {
         }
     }
 
-    tractionCoeffs(p: Point): TractionCoeff {
-        const {displ, stress} = this.displAndStressCoeff(p)
+    /**
+     * Get the displacement Influence Coefficients
+     */
+    displIcAt(p: Point): DisplCoeff {
+        const displ = this.displCoeff(p)
         const sin    = this.sin
         const cos    = this.cos
         const cos2   = cos**2
         const sin2   = sin**2
         const sincos = sin*cos
 
-        const c = [[0,0], [0,0]] as TractionCoeff
-        if (this.bcType_[0] == BC.Traction) {
-            c[0][0] = (stress[1][0]-stress[0][0])*sincos + stress[2][0]*(cos2-sin2)
-            c[0][1] = (stress[1][1]-stress[0][1])*sincos + stress[2][1]*(cos2-sin2)
-        }
-        else {
-            c[0][0] = displ[0][0]*cos + displ[1][0]*sin
-            c[0][1] = displ[0][1]*cos + displ[1][1]*sin
-        }
-
-        if (this.bcType_[1] == BC.Traction) {
-            c[1][0] = stress[0][0]*sin2 - 2*stress[2][0]*sincos + stress[1][0]*cos2
-            c[1][1] = stress[0][1]*sin2 - 2*stress[2][1]*sincos + stress[1][1]*cos2
-        }
-        else {
-            c[1][0] = -displ[0][0]*sin + displ[1][0]*cos
-            c[1][1] = -displ[0][1]*sin + displ[1][1]*cos
-        }
-
-        console.log(c)
-        return c
+        return [
+            [
+                displ[0][0]*cos + displ[1][0]*sin,
+                displ[0][1]*cos + displ[1][1]*sin
+            ],
+            [
+                -displ[0][0]*sin + displ[1][0]*cos,
+                -displ[0][1]*sin + displ[1][1]*cos
+            ]
+        ]
     }
 
-    displCoeff(p: Point): DisplCoeff {
+    /**
+     * Get the traction Influence Coefficients
+     */
+    tractionIcAt(p: Point): TractionCoeff {
+        const stress = this.stressCoeff(p)
+        const sin    = this.sin
+        const cos    = this.cos
+        const cos2   = cos**2
+        const sin2   = sin**2
+        const sincos = sin*cos
+
+        return [
+            [
+                (stress[1][0]-stress[0][0])*sincos + stress[2][0]*(cos2-sin2),
+                (stress[1][1]-stress[0][1])*sincos + stress[2][1]*(cos2-sin2)
+            ],
+            [
+                stress[0][0]*sin2 - 2*stress[2][0]*sincos + stress[1][0]*cos2, 
+                stress[0][1]*sin2 - 2*stress[2][1]*sincos + stress[1][1]*cos2
+            ]
+        ]
+    }
+
+    private displCoeff(p: Point): DisplCoeff {
         if (this.mat === undefined) throw new Error('material is not set')
         
         const con  = this.mat.con
@@ -237,10 +249,12 @@ export class Segment {
         return [[uxds, uxdn], [uyds, uydn]]
     }
 
-    /**
-     * @return a matrix for which each line represents either Sxx, Syy or Sxy for the 2 coordinates (shear and normal)
-     */
-    stressCoeff(p: Point): StressCoeff {
+    private stressCoeff(p: Point): StressCoeff {
+        //
+        // @return a matrix for which each line represents either Sxx, Syy or Sxy
+        // for the 2 coordinates (shear and normal)
+        //
+        
         if (this.mat === undefined) throw new Error('material is not set')
 
         const con   = this.mat.con
@@ -285,7 +299,7 @@ export class Segment {
         ]
     }
 
-    displAndStressCoeff(p: Point): {displ: DisplCoeff, stress: StressCoeff} {
+    private displAndStressCoeff(p: Point): {displ: DisplCoeff, stress: StressCoeff} {
         if (this.mat === undefined) throw new Error('material is not set')
 
         const con   = this.mat.con

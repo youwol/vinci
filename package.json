@@ -13,11 +13,9 @@
     "test": "jest -c ./jest.config.js --rootDir .",
     "test-coverage": "jest -c ./jest.config.js --rootDir . --collect-coverage --collectCoverageFrom=./src/lib/**/*.ts ",
     "doc": "rm -fr dist/docs && typedoc src/ src/examples --exclude src/lib --exclude src/tests --media ./media --excludePrivate --disableSources --out dist/docs --includeVersion --hideGenerator",
-    "publish-npm-public": "yarn build:prod && yarn test-coverage && yarn publish --access public"
+    "publish-npm-public": "yarn build:prod && yarn test-coverage && yarn publish --access public",
+    "serve": "http-server ../../../.. -p 92 -o /devs/workspace/packages/vinci/examples/html/index.html"
   },
-  "dependencies": {
-  },
-  "peerDependencies": {},
   "devDependencies": {
     "@types/filesystem": "0.0.30",
     "@types/jest": "26.0.22",
@@ -30,6 +28,7 @@
     "file-system": "2.2.2",
     "jest": "26.6.3",
     "jest-junit": "12.0.0",
+    "lil-gui": "^0.17.0",
     "ts-jest": "26.5.4",
     "ts-loader": "8.1.0",
     "tslib": "^2.3.1",

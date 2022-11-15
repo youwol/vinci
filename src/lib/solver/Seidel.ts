@@ -55,7 +55,7 @@ export class Seidel implements Solver {
 
         this.model.faults.forEach( fault => {
             fault.elements.forEach( e => {
-                this.systems.push( new System([e], model) )
+                this.systems.push( new System([e], model, fault) )
 
                 if (this.stopCB && this.stopCB()) {
                     this.warCB('solver initialization stopped by user')
@@ -65,8 +65,8 @@ export class Seidel implements Solver {
             })
         })
 
-        console.warn('do we put that here or at the beginning of the run method?')
-        applyRemotes(this.model)
+        // TODO: do we put that here or at the beginning of the run method?
+        // applyRemotes(this.model)
 
         this.valid_ = true
         return true
@@ -78,6 +78,10 @@ export class Seidel implements Solver {
             return
         }
 
+        applyRemotes(this.model)
+
+        this.msgCB('Solving the system...')
+
         let mag  = 1
         let iter = 0
         while (mag > this.tol_) {
@@ -88,7 +92,7 @@ export class Seidel implements Solver {
             })
 
             if (iter>this.maxIter_) {
-                if (this.warCB) this.warCB('solver max iter reached. Exiting...')
+                if (this.warCB) this.warCB(`solver max iter reached (${this.maxIter_}). Exiting...`)
 				break ;
             }
 
@@ -104,5 +108,6 @@ export class Seidel implements Solver {
                 this.iterCB(mag, iter)
             }
         }
+        this.msgCB('Solver ended.')
     }
 }

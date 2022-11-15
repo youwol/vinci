@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Vinci</title>
+    <script src='/devs/workspace/packages/dataframe/dist/@youwol/dataframe.js'></script>
+    <script src='/devs/workspace/packages/math/dist/@youwol/math.js'></script>
+    <script src='/devs/workspace/packages/geometry/dist/@youwol/geometry.js'></script>
+    <script src='/devs/workspace/packages/io/dist/@youwol/io.js'></script>
+    <script src='/devs/workspace/packages/three-extra/node_modules/three/build/three.min.js'></script>
+    <script src='/devs/workspace/packages/three-extra/node_modules/three/examples/js/controls/TrackballControls.js'></script>
+    <script src='/devs/workspace/packages/three-extra/dist/@youwol/three-extra.js'></script>
+    <script src='/devs/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
+    <script src="/devs/workspace/packages/vinci/node_modules/lil-gui/dist/lil-gui.umd.min.js"></script>
+    <script src="/devs/workspace/packages/vinci/dist/@youwol/vinci.js"></script>
+    <script src="https://kit.fontawesome.com/daa834e337.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://unpkg.com/d3@5.7.0/dist/d3.min.js"></script> -->
+    <!-- <script src="https://unpkg.com/d3fc@14.0.27/build/d3fc.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- <div class="loading" id="js-loader">
+        <div class="loader"></div>
+    </div> -->
+    <div class='home-container'>
+        <span>
+            <div class='buttonIcon' style="position: absolute; right: 80px;">
+                <div id='goHome'><i class='fa fa-home'></i></div>
+            </div>
+            <div class='buttonIcon' style="position: absolute; right: 45px;">
+                <div id='saveHome'><i class='fa fa-clinic-medical'></i></div>
+            </div>
+            <div class='right-container'>
+                <div id='orientCubeWrapper'></div>
+            </div>
+        </span>
+    </div>
+    <div id = "gui", style="position: absolute; top: 30px; left: 10px; opacity: 70%;"></div>
+
+    <div class="bottom-1 start-1" style='position: absolute; opacity: 70%; left: 20px; bottom: 20px;'>
+        <a href="https://www.youwol.com/" target="_blank">
+            <img src="youwol.png" style="width: 150px;">
+        </a>
+    </div>
+    <input id="upload" type="file" style="visibility:hidden" accept=".pl"/>
+
+    <script type="text/javascript" src='./doSurface.js'></script>
+    <script type="text/javascript" src='./doLines.js'></script>
+    <script type="text/javascript" src='./postInit.js'></script>
+    <script type="text/javascript" src='./utils.js'></script>
+    <script type="text/javascript" src='./init.js'></script>
+    <script type="text/javascript" src='./main.js'></script>
+    <script type="text/javascript" src='./gui.js'></script>
+
+    <script>
+        const three     = globalThis['THREE']
+        const dataframe = globalThis['@youwol/dataframe']
+        const math      = globalThis['@youwol/math']
+        const geom      = globalThis['@youwol/geometry']
+        const io        = globalThis['@youwol/io']
+        const extra     = globalThis['@youwol/three-extra']
+        const kepler    = globalThis['@youwol/kepler']
+        const vinci     = globalThis['@youwol/vinci']
+        // const GUI       = lil.GUI
+
+        const model = {
+            grid: false,
+            bbox: false,
+            backgroundColor: '#aaa',
+            colorScale: false,
+            gridNb: 100,
+            gridExtend: 3,
+            gridSampling: 50
+        }
+
+        const surfaceInfo = {
+            attr: 'Ux',
+            lut: 'Insar',
+            duplicateLut: 1,
+            reverseLut: false,
+            surface: {
+                show: false,
+                color: '#aaa',
+                flat: false,
+                creaseAngle: 0,
+                opacity: 1,
+            },
+            deformation: {
+                active: false,
+                attr: 'U',
+                scale: 1
+            },
+            iso: {
+                show: true,
+                showFill: true,
+                showLines: true,
+                flat: false,
+                nb: 20,
+                // spacing: 0.1,
+                useMinMax: false,
+                min: 0,
+                max: 1
+            },
+            streamlines: {
+                show: false,
+                attr: 'U',
+                color: '#000000',
+                maximumPointsPerLine: 50,
+                dSep: 0.1,
+                timeStep: 0.05,
+                dTest: 0.08,
+                maxTimePerIteration: 1000
+            },
+            borders: {
+                show: true,
+                color: "#000000"
+            },
+            points: {
+                show: false,
+                color: "#ffffff",
+                size: 2
+            }
+        }
+
+        const lineInfo  = {
+            show: true,
+            width: 0.002,
+            color: "#000000"
+        }
+
+        init()
+        regenerateModel()
+        postInit()
+        connectGui()
+        extra.changeView('up', { scene, camera, controls })
+        requestAnimationFrame(animate)
+
+    </script>
+</body>
+
+</html>
