@@ -14,7 +14,8 @@
     "test-coverage": "jest -c ./jest.config.js --rootDir . --collect-coverage --collectCoverageFrom=./src/lib/**/*.ts ",
     "doc": "rm -fr dist/docs && typedoc src/ src/examples --exclude src/lib --exclude src/tests --media ./media --excludePrivate --disableSources --out dist/docs --includeVersion --hideGenerator",
     "publish-npm-public": "yarn build:prod && yarn test-coverage && yarn publish --access public",
-    "serve": "http-server ../../../.. -p 92 -o /devs/workspace/packages/vinci/examples/html/index.html"
+    "__serve": "http-server ../../../.. -p 92 -o /devs/workspace/packages/vinci/examples/html/index.html",
+    "serve": "http-server . -p 92 -o /examples/html/index.html"
   },
   "devDependencies": {
     "@types/filesystem": "0.0.30",
@@ -23,12 +24,15 @@
     "@youwol/dataframe": "^0.0.30",
     "@youwol/geometry": "^0.0.8",
     "@youwol/io": "^0.0.20",
+    "@youwol/kepler": "^0.0.10-wip",
     "@youwol/math": "^0.0.18",
+    "@youwol/three-extra": "^0.0.10",
     "eslint": "7.23.0",
     "file-system": "2.2.2",
     "jest": "26.6.3",
     "jest-junit": "12.0.0",
     "lil-gui": "^0.17.0",
+    "three": "0.128.0",
     "ts-jest": "26.5.4",
     "ts-loader": "8.1.0",
     "tslib": "^2.3.1",
@@ -43,5 +47,7 @@
       "version": "0.0.0"
     },
     "cdnDependencies": {}
+  },
+  "dependencies": {
   }
 }

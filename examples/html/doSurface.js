@@ -68,18 +68,18 @@ function doSurface(df, info) {
         }
     }
 
-    if (info.borders && info.borders.show) {
-        // const borders = createSurfaceBorders(df, info.borders.color)
-        const borders = kepler.createSurfaceBorders({
-            mesh: surface,
-            parameters: new kepler.LinesetParameters({
-                color: info.borders.color,
-                useTube: info.borders.useTube !== undefined ? info.borders.useTube : false,
-                tubeRadius: info.borders.tubeRadius !== undefined ? info.borders.tubeRadius : 1
-            })
-        })
-        group.add(borders)
-    }
+    // if (info.borders && info.borders.show) {
+    //     // const borders = createSurfaceBorders(df, info.borders.color)
+    //     const borders = kepler.createSurfaceBorders({
+    //         mesh: surface,
+    //         parameters: new kepler.LinesetParameters({
+    //             color: info.borders.color,
+    //             useTube: info.borders.useTube !== undefined ? info.borders.useTube : false,
+    //             tubeRadius: info.borders.tubeRadius !== undefined ? info.borders.tubeRadius : 1
+    //         })
+    //     })
+    //     group.add(borders)
+    // }
 
     if (info.points && info.points.show) {
         const g = new THREE.Group
