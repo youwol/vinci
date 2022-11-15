@@ -16,7 +16,8 @@ obj = {
     fullscreen() { fullScreen() },
     upload() {
         document.getElementById('upload').click()
-    }
+    },
+    optim: true
 }
 
 const isoParams = {
@@ -79,14 +80,17 @@ function connectGui() {
     }
 
     gui.onChange( event => {
-        // console.log(event)
-        if (event.property !== 'gridSampling') {
-            model.gridSampling = 40
+        if (obj.optim) {
+            if (event.property !== 'gridSampling') {
+                model.gridSampling = 40
+            }
         }
     })
     gui.onFinishChange( _ => {
-        model.gridSampling = gridSampling
-        repaint()
+        if (obj.optim) {
+            model.gridSampling = gridSampling
+            repaint()
+        }
     })
 
     // =======================================
@@ -126,7 +130,7 @@ function connectGui() {
         repaint()
     })
 
-    mod.add( model, 'gridSampling', 10, 200, 1 ).name('Grid sampling').onChange( value => {
+    mod.add( model, 'gridSampling', 10, 500, 1 ).name('Grid sampling').onChange( value => {
         gridSampling = value
         model.gridSampling = value
         repaint()
@@ -237,5 +241,6 @@ function connectGui() {
     })
     general.add(obj, 'screenshot').name('Take screenshot')
     general.add(obj, 'fullscreen').name('Fullscreen on/off')
+    general.add(obj, 'optim').name('Optimization')
     general.close()
 }

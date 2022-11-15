@@ -850,10 +850,17 @@
   resolved "https://registry.npmjs.org/@youwol/geometry/-/geometry-0.0.8.tgz"
   integrity sha512-EotPO1aZDRnVdHEgQCmJvqtfFrk5SpCp7SRmqSas0gkc9vQtoKjYktXsH29qYqV03B2RYUAx3j2k9aFeLxflaA==
 
-"@youwol/io@^0.0.20":
+"@youwol/io@0.0.20":
   version "0.0.20"
-  resolved "https://registry.npmjs.org/@youwol/io/-/io-0.0.20.tgz"
+  resolved "https://registry.yarnpkg.com/@youwol/io/-/io-0.0.20.tgz#1101293674f39f3e2a9fe28124c9f0856442d8f8"
   integrity sha512-GJvQGoY0vN65gOYe+AcV79LsupaJc5tsoeXEcomwJtgsvB+FThyAzx+dane4+YBKSbK24CyURTbbkILbghC6EA==
+
+"@youwol/io@^0.0.25-wip":
+  version "0.0.25-wip"
+  resolved "https://registry.yarnpkg.com/@youwol/io/-/io-0.0.25-wip.tgz#d602752615876383b7ba169acc6d68c9addc16ca"
+  integrity sha512-C3A2MMgq3yut2+xgY2V11iOh7LNsGKVyciD73Kvwi+tN/fGkVksr2j4qXUJXeR57+0lr/f3TLr1C2Si1RBjMvw==
+  dependencies:
+    "@youwol/io" "0.0.20"
 
 "@youwol/kepler@^0.0.10-wip":
   version "0.0.10-wip"
