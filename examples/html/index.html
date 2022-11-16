@@ -55,12 +55,12 @@
     </div>
     <div id = "gui", style="position: absolute; top: 30px; left: 10px; opacity: 70%;"></div>
 
-    <div class="bottom-1 start-1" style='position: absolute; opacity: 70%; left: 20px; bottom: 20px;'>
+    <div class="bottom-1 start-1" style='position: absolute; opacity: 70%; left: 10px; bottom: 0px;'>
         <a href="https://www.youwol.com/" target="_blank">
             <img src="youwol.png" style="width: 150px;">
         </a>
+        <input id="upload" type="file" style="visibility:hidden" accept=".pl"/>
     </div>
-    <input id="upload" type="file" style="visibility:hidden" accept=".pl"/>
 
     <script type="text/javascript" src='./doSurface.js'></script>
     <script type="text/javascript" src='./doLines.js'></script>
@@ -119,16 +119,16 @@
                 min: 0,
                 max: 1
             },
-            streamlines: {
-                show: false,
-                attr: 'U',
-                color: '#000000',
-                maximumPointsPerLine: 50,
-                dSep: 0.1,
-                timeStep: 0.05,
-                dTest: 0.08,
-                maxTimePerIteration: 1000
-            },
+            // streamlines: {
+            //     show: false,
+            //     attr: 'U',
+            //     color: '#000000',
+            //     maximumPointsPerLine: 50,
+            //     dSep: 0.1,
+            //     timeStep: 0.05,
+            //     dTest: 0.08,
+            //     maxTimePerIteration: 1000
+            // },
             borders: {
                 show: true,
                 color: "#000000"

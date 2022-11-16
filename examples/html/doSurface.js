@@ -96,8 +96,8 @@ function doSurface(df, info) {
         g.add(points)
     }
 
-    if (info.streamlines !== undefined && info.streamlines.show === true) {
-        const vattr = manager.serie(3, info.streamlines.attr)
+    if (streamLines !== undefined && streamLines.show === true) {
+        const vattr = manager.serie(3, streamLines.attr)
         console.log( math.minMax(vattr) )
         if (vattr) {
             let positions = dataframe.Serie.create({
@@ -115,11 +115,11 @@ function doSurface(df, info) {
                 vectorField: vattr,
                 // nx: 100, 
                 // ny: 100, 
-                maximumPointsPerLine: info.streamlines.maximumPointsPerLine!==undefined?info.streamlines.maximumPointsPerLine:50,
-                dSep: info.streamlines.dSep!==undefined?info.streamlines.dSep:0.2,
-                timeStep: info.streamlines.timeStep!==undefined?info.streamlines.timeStep:0.01,
-                dTest: info.streamlines.dTest!==undefined?info.streamlines.dTest:0.08,
-                maxTimePerIteration: info.streamlines.maxTimePerIteration!==undefined?info.streamlines.maxTimePerIteration:1000
+                maximumPointsPerLine: streamLines.maximumPointsPerLine!==undefined?streamLines.maximumPointsPerLine:50,
+                dSep: streamLines.dSep!==undefined?streamLines.dSep:0.2,
+                timeStep: streamLines.timeStep!==undefined?streamLines.timeStep:0.01,
+                dTest: streamLines.dTest!==undefined?streamLines.dTest:0.08,
+                maxTimePerIteration: streamLines.maxTimePerIteration!==undefined?streamLines.maxTimePerIteration:1000
             })
             if (lines) {
                 const g = new THREE.Group
@@ -129,23 +129,44 @@ function doSurface(df, info) {
                         array: dataframe.createTyped(Float32Array, line.series.positions.array, false),
                         itemSize: 3
                     })
-                    g.add( kepler.createLineset({
+                    // g.add( kepler.createLineset({
+                    //     position: pos,
+                    //     parameters: new kepler.LinesetParameters({
+                    //         color: '#000'
+                    //     })
+                    // }) )
+
+                    // console.log(streamLines)
+
+                    g.add( kepler.createLineset2({
                         position: pos,
-                        parameters: new kepler.LinesetParameters({
-                            color: '#000'
-                        })
+                        parameters: {
+                            color: streamLines.color,
+                            width: streamLines.width
+                        }
+                    }) )
+
+                    g.add( kepler.createLineset2({
+                        position: pos,
+                        parameters: {
+                            width: streamLines.width,
+                            color: streamLines.color,
+                            opacity   : 1,
+                            dashed    : false,
+                            dashScale : 0.1
+                        }
                     }) )
                 })
-                if (info.streamlines.translate) {
-                    g.translateX(info.streamlines.translate[0])
-                    g.translateY(info.streamlines.translate[1])
-                    g.translateZ(info.streamlines.translate[2])
+                if (streamLines.translate) {
+                    g.translateX(streamLines.translate[0])
+                    g.translateY(streamLines.translate[1])
+                    g.translateZ(streamLines.translate[2])
                 }
                 group.add(g)
             }
         }
         else {
-            console.warn('cannot find stream attribute' + info.streamlines.attr)
+            console.warn('cannot find stream attribute' + streamLines.attr)
         }
     }
 

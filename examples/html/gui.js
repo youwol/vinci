@@ -17,7 +17,8 @@ obj = {
     upload() {
         document.getElementById('upload').click()
     },
-    optim: true
+    optim: true,
+    optimSampling: 20
 }
 
 const isoParams = {
@@ -34,6 +35,20 @@ const def = {
     scale: 1
 }
 
+const streamLines = {
+    show: false,
+    attr: 'U',
+    color: '#000000',
+    maximumPointsPerLine: 50,
+    dSep: 0.2,
+    timeStep: 0.1,
+    dTest: 0.1,
+    maxTimePerIteration: 100,
+    translate: [0,0,0.1],
+    width: 0.001
+
+}
+
 function connectGui() {
 
     const colorBack = {
@@ -44,6 +59,13 @@ function connectGui() {
     }
 
     const colorLine = {
+        string: '#000000',
+        int: 0x000000,
+        object: { r: 0, g: 0, b: 0 },
+        array: [0, 0, 0]
+    }
+
+    const colorStream = {
         string: '#000000',
         int: 0x000000,
         object: { r: 0, g: 0, b: 0 },
@@ -82,7 +104,7 @@ function connectGui() {
     gui.onChange( event => {
         if (obj.optim) {
             if (event.property !== 'gridSampling') {
-                model.gridSampling = 40
+                model.gridSampling = obj.optimSampling
             }
         }
     })
@@ -138,7 +160,9 @@ function connectGui() {
 
     // =======================================
 
-    const display = gui.addFolder('Display Grid')
+    const display = gui.addFolder('Iso-contours')
+    display.add( surfaceInfo.iso, 'show').name('Show')
+
     display.add(isoParams, 'attribute', attributes).name('Attribute').onChange(value => {
         surfaceInfo.attr = value
         repaint()
@@ -208,6 +232,30 @@ function connectGui() {
 
     // =======================================
 
+    /*
+    maximumPointsPerLine: 50,
+    dSep: 0.1,
+    timeStep: 0.05,
+    dTest: 0.08,
+    maxTimePerIteration: 1000,
+    */
+    const stream = gui.addFolder('StreamLines')
+    stream.add( streamLines, 'show').name('Show').onChange( value => repaint() ).disable()
+    stream.add( streamLines, 'width').name('Width', 0.0001, 0.01, 0.001).onChange( value => repaint() )
+    stream.addColor(colorStream, 'string').name('Color').onChange(value => {
+        streamLines.color = value
+        repaint()
+    })
+    stream.add( streamLines, 'maximumPointsPerLine', 5, 200, 5).onChange( value => repaint() )
+    stream.add( streamLines, 'dSep', 0.01, 1, 0.1).onChange( value => repaint() )
+    stream.add( streamLines, 'timeStep', 0.01, 0.5, 0.01).onChange( value => repaint() )
+    stream.add( streamLines, 'dTest', 0.01, 0.5, 0.01).onChange( value => repaint() )
+    stream.add( streamLines, 'maxTimePerIteration', 10, 100, 10).onChange( value => repaint() )
+    stream.close()
+    // stream.hide()
+
+    // =======================================
+
     const deform = gui.addFolder('Deform')
     deform.add(def, 'show').name('Active').onChange(value => {
         surfaceInfo.deformation.active = value
@@ -221,13 +269,13 @@ function connectGui() {
 
     // =======================================
 
-    const displayL = gui.addFolder('Display Line')
+    const displayL = gui.addFolder('Fault(s)')
     displayL.add( obj, 'lineSize', 0.0001, 0.05, 0.001).name('Line width').onChange( value => {
         lineInfo.width = value
         repaint()
     })
     displayL.addColor(colorLine, 'string').name('Color').onChange(value => {
-        console.log(value)
+        // console.log(value)
         lineInfo.color = value
         repaint()
     })
@@ -242,5 +290,6 @@ function connectGui() {
     general.add(obj, 'screenshot').name('Take screenshot')
     general.add(obj, 'fullscreen').name('Fullscreen on/off')
     general.add(obj, 'optim').name('Optimization')
+    general.add(obj, 'optimSampling').name('Optimization sampling')
     general.close()
 }

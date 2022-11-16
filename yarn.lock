@@ -1066,15 +1066,15 @@
   resolved "https://registry.npmjs.org/@xtuc/long/-/long-4.2.2.tgz"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@youwol/dataframe@^0.0.30":
-  version "0.0.30"
-  resolved "https://registry.npmjs.org/@youwol/dataframe/-/dataframe-0.0.30.tgz"
-  integrity sha512-Ne+zfudjSPtt9Kqw8DTkHjMLF/pUiqDhtOIr665y9I7PNA1ro8pMgAcvhBtYxSRWIB982dWU6HSFFJhIAIV1Rg==
+"@youwol/dataframe@^0.0.35":
+  version "0.0.35"
+  resolved "https://registry.yarnpkg.com/@youwol/dataframe/-/dataframe-0.0.35.tgz#2500da0da18582178723d4d37f4ed5f07f33944a"
+  integrity sha512-S5Iu7p1HER0+YURL4Y04PZyJB0tFtBIipCE6kanteQuwvpJenxauVdWBSaX+i3bZOzht9QPiVeCrr34UrAB3Xg==
 
-"@youwol/geometry@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@youwol/geometry/-/geometry-0.0.8.tgz"
-  integrity sha512-EotPO1aZDRnVdHEgQCmJvqtfFrk5SpCp7SRmqSas0gkc9vQtoKjYktXsH29qYqV03B2RYUAx3j2k9aFeLxflaA==
+"@youwol/geometry@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@youwol/geometry/-/geometry-0.0.21.tgz#820f76a69e6d1cb6b9392520aba64b326e042047"
+  integrity sha512-SZI1z9iOTmqaG4HPUueC+Vh4/LDpI4AKUOy1l3jSa64MOBUOi3get64hx3nBrQL6D1vQcy48tSmpbqJ8J6cUVg==
 
 "@youwol/io@0.0.20":
   version "0.0.20"
@@ -1093,10 +1093,10 @@
   resolved "https://registry.yarnpkg.com/@youwol/kepler/-/kepler-0.0.10-wip.tgz#f600d9f4583641b7a1b1f23976872f6befcf25d0"
   integrity sha512-s0FbO1jz8p4Z8hzqGoPTB2VXm+TcMhVxCIDz/ZrZ6Az2Rgk3UCfhfn/GRDIToFeyVE+lsniI26t7fuUViC3k4g==
 
-"@youwol/math@^0.0.18":
-  version "0.0.18"
-  resolved "https://registry.npmjs.org/@youwol/math/-/math-0.0.18.tgz"
-  integrity sha512-yNFHXTM9GOK7hnl9ZbUuMojIptrbzsOou53xIUt4yl+2w15Y7KYnS7BSRrEWfmTtk8auejdd8z5ATy/HfEJo6g==
+"@youwol/math@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@youwol/math/-/math-0.0.21.tgz#573cbaebfc75944e4d89a3340bcddc6d827752eb"
+  integrity sha512-ZCB1X89DTqF7P9zNy3Gn1kkbw5D81d0+XZst8FdwKrqMLLYa3Y6V3Y57Ybhk5VqdStT7+VijM81dsEEmKIXwpg==
 
 "@youwol/three-extra@^0.0.10":
   version "0.0.10"
