@@ -3,6 +3,13 @@ dataframe = globalThis['@youwol/dataframe']
 
 // -----------------------------------------------------------------------------------------
 
+const sinus = []
+for (let i=0; i<100; ++i) {
+    const x = i/100*Math.PI*5
+    const y = Math.sin(x)
+    sinus.push(x*10, y*10, 0)
+}
+
 // TODO: use array of buildFault
 //
 const models = new Map
@@ -11,6 +18,7 @@ models.set("Inclined",      buildFault([0,0,0, 1,1,0, 2,2,0]) )
 models.set("Horizontal",    buildFault(new Array(15).fill(0).map( (v,i) => i%3===0?i/3:0)) )
 models.set("Vertical",      buildFault(new Array(15).fill(0).map( (v,i) => i%3===0?0:i/3)) )
 models.set("Wavy",          buildFault([0,0,0, 1,1,0, 2,0,0, 3,1,0, 4,0,0]) )
+models.set("Sinus",         buildFault(sinus) )
 const s = 0.6
 models.set("Spacing", [
     buildFault([0,0,0, 1,0,0, 2,0,0]),
@@ -130,21 +138,32 @@ function regenerateModel() {
     else {
         grid = runModel(curDfs, true)
     }
+
     doSurface(grid, surfaceInfo)
-    doLines(faults, lineInfo)
+
+    doLines(faults, faultParams)
+
+    colorScale({
+        element : 'color-scale', 
+        lutName : isoParams.lut, 
+        min     : isoParams.min, 
+        max     : isoParams.max,
+        title   : isoParams.attr,
+        style   : new Map([
+            ['position', 'absolute'],
+            ['left', '10px'],
+            ['top', '420px']
+        ])
+    })
 }
 
 bc = 'tt'
-
 faults = []
-
 vmodel = new vinci.Model()
-
 solver = new vinci.Seidel({
     vmodel,
     maxIter: 100
 })
-
 
 function generateRectangle({a, b, na, nb, center=[0,0,0], badFct}) {
     const add = (x, y) => nodes.push(x+center[0]-a/2, y+center[1]-b/2, center[2])

@@ -49,7 +49,8 @@ function init() {
     renderer.setPixelRatio( window.devicePixelRatio )
     renderer.setSize( window.innerWidth, window.innerHeight )
     renderer.shadowMap.enabled = true
-    document.body.appendChild( renderer.domElement )
+    
+    document.getElementById("viewer3d").appendChild( renderer.domElement )
 
     renderFct = new extra.RenderFunctions({renderer, scene, camera})
 

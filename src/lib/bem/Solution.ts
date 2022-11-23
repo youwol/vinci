@@ -22,6 +22,7 @@ export class Solution {
             fault.elements.forEach( e => u.push(e.burger[0], e.burger[1]) )
             sol.push(u)
         })
+        
         return sol
     }
 
@@ -30,7 +31,7 @@ export class Solution {
      * @note The return displacement is in the form [ux,uy, ux,uy, ...]
      */
     displ(pts: Serie): Serie {
-        const isize = pts.itemSize
+        const isize = 2 //pts.itemSize
         if (isize < 2) {
             throw new Error('itemSize for points should be at least 2')
         }
@@ -41,7 +42,8 @@ export class Solution {
         // })
         const sol = Serie.create({
             array: createFrom({array: pts.array, count: pts.count, itemSize: isize}),
-            itemSize: isize
+            itemSize: isize,
+            dimension: 2
         })
 
         let j = 0
@@ -56,7 +58,7 @@ export class Solution {
             })
             sol.array[j++] = u[0]
             sol.array[j++] = u[1]
-            if (isize > 2) sol.array[j++] = 0
+            // if (isize > 2) sol.array[j++] = 0
         })
 
         return sol
@@ -73,7 +75,8 @@ export class Solution {
 
         const sol = Serie.create({
             array: createFrom({array: pts.array, count: pts.count, itemSize: 3}),
-            itemSize: 3
+            itemSize: 3,
+            dimension: 2
         })
         let j = 0
         pts.forEach( p => {

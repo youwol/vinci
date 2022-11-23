@@ -1,5 +1,7 @@
 GUI = lil.GUI
 
+console.log('ADD A INSAR FRINGES WITH STATTELITE ORIENTATION !!!')
+
 gridSampling = 50
 
 obj = {
@@ -9,9 +11,6 @@ obj = {
     theta: 0,
     bc: 'tt',
     gridSize: 3,
-    showIsoLines: true,
-    showPoints: false,
-    lineSize: 0.002,
     screenshot() { takeScreenshot() },
     fullscreen() { fullScreen() },
     upload() {
@@ -21,18 +20,46 @@ obj = {
     optimSampling: 20
 }
 
+const surfParams = {
+    show: false,
+    flat: false,
+    color: '#aaaaaa',
+    opacity: 1,
+    creaseAngle: 1,
+    showPoints: false,
+    pointSize: 1,
+    pointColor: '#ffffff'
+}
+
 const isoParams = {
-    attribute: 'Ux',
-    colorTable: 'Insar',
-    nbIso: 20,
+    show: true,
+    attr: 'Ux',
+
+    lut: 'Insar',
+    duplicateLut: 1,
+    reverseLut: false,
+
+    opacity: 1,
+
+    nb: 20,
+    userMinMax: false,
     min: 0,
     max: 0,
-    userMinMax: false
+    showFill: true,
+    showLines: true,
+    lineWidth: 0.002
+}
+
+const faultParams = {
+    show: true,
+    width: 0.005,
+    color: '#000000'
 }
 
 const def = {
     show : false,
-    scale: 1
+    scale: 1,
+    attr: 'U'
 }
 
 const streamLines = {
@@ -46,7 +73,6 @@ const streamLines = {
     maxTimePerIteration: 100,
     translate: [0,0,0.1],
     width: 0.001
-
 }
 
 function connectGui() {
@@ -161,36 +187,36 @@ function connectGui() {
     // =======================================
 
     const display = gui.addFolder('Iso-contours')
-    display.add( surfaceInfo.iso, 'show').name('Show')
+    display.add( isoParams, 'show').name('Show')
 
-    display.add(isoParams, 'attribute', attributes).name('Attribute').onChange(value => {
-        surfaceInfo.attr = value
+    display.add(isoParams, 'attr', attributes).name('Attribute').onChange(value => {
+        isoParams.attr = value
         repaint()
-    })
+    }).listen()
 
     kepler.getColorMapNames().forEach(name => {
         kepler.ColorMap.addColorMap(name, kepler.getColorMap(name, 40, false).colors)
     })
     const colorTables = kepler.colorMapNames()
-    display.add(isoParams, 'colorTable', colorTables).name('Color table').onChange(value => {
-        surfaceInfo.lut = value
+    display.add(isoParams, 'lut', colorTables).name('Color table').onChange(value => {
+        isoParams.lut = value
         repaint()
-    })
+    }).listen()
 
-    display.add(isoParams, 'nbIso', 2, 200, 1 ).name('Nb isos').onChange( value => {
-        surfaceInfo.iso.nb = value
+    display.add(isoParams, 'nb', 2, 200, 1 ).name('Nb isos').onChange( value => {
+        // iso.nb = value
         repaint()
     })
 
     display.add(isoParams, 'userMinMax').name('User min/max').onChange( value => {
-        surfaceInfo.iso.useMinMax = value
+        // iso.useMinMax = value
         if (value) {
             minGui.enable()
             maxGui.enable()
             minGui.listen(false)
             maxGui.listen(false)
-            surfaceInfo.iso.min = minGui.getValue()
-            surfaceInfo.iso.max = maxGui.getValue()
+            isoParams.min = minGui.getValue()
+            isoParams.max = maxGui.getValue()
         }
         else {
             minGui.disable()
@@ -202,14 +228,14 @@ function connectGui() {
     })
 
     minGui = display.add(isoParams, 'min').name('Min').listen().disable().onChange( value => {
-        if (surfaceInfo.iso.useMinMax ===  true) {
-            surfaceInfo.iso.min = value
+        if (isoParams.useMinMax ===  true) {
+            isoParams.min = value
             repaint()
         }
     })
     maxGui = display.add(isoParams, 'max').name('Max').listen().disable().onChange( value => {
-        if (surfaceInfo.iso.useMinMax ===  true) {
-            surfaceInfo.iso.max = value
+        if (isoParams.useMinMax ===  true) {
+            isoParams.max = value
             repaint()
         }
     })
@@ -219,16 +245,20 @@ function connectGui() {
     //     repaint()
     // })
 
-    display.add(obj, "showIsoLines").name('Show iso-lines').onChange( value => {
-        surfaceInfo.iso.showLines = value
+    display.add(isoParams, "showLines").name('Show iso-lines').onChange( value => {
+        // surfaceInfo.iso.showLines = value
         repaint()
     })
 
-    display.add(obj, "showPoints").name('Show points').onChange( value => {
-        surfaceInfo.points.show = value
+    display.add(surfParams, "showPoints").name('Show points').onChange( value => {
+        // surfaceInfo.points.show = value
         repaint()
     })
-    // display.close()
+    display.add(surfParams, "pointSize", 1, 10, 1).name('Points size').onChange( value => {
+        // surfaceInfo.points.show = value
+        repaint()
+    })
+    display.close()
 
     // =======================================
 
@@ -258,11 +288,11 @@ function connectGui() {
 
     const deform = gui.addFolder('Deform')
     deform.add(def, 'show').name('Active').onChange(value => {
-        surfaceInfo.deformation.active = value
+        // surfaceInfo.deformation.active = value
         repaint()
     })
     deform.add( def, 'scale', 0.1, 10, .1 ).name('Scaling').onChange( value => {
-        surfaceInfo.deformation.scale = value
+        // surfaceInfo.deformation.scale = value
         repaint()
     })
     deform.close()
@@ -270,13 +300,13 @@ function connectGui() {
     // =======================================
 
     const displayL = gui.addFolder('Fault(s)')
-    displayL.add( obj, 'lineSize', 0.0001, 0.05, 0.001).name('Line width').onChange( value => {
-        lineInfo.width = value
+    displayL.add( faultParams, 'width', 0.0001, 0.05, 0.001).name('Line width').onChange( value => {
+        // lineInfo.width = value
         repaint()
     })
     displayL.addColor(colorLine, 'string').name('Color').onChange(value => {
         // console.log(value)
-        lineInfo.color = value
+        // faultParams.color = value
         repaint()
     })
     displayL.close()
@@ -292,4 +322,56 @@ function connectGui() {
     general.add(obj, 'optim').name('Optimization')
     general.add(obj, 'optimSampling').name('Optimization sampling')
     general.close()
+
+    // ======================================
+
+    const mohrr = {
+        S1: 2,
+        S2: 1,
+        S3: 0.5
+    }
+    function checkM() {
+        if (mohrr.S1 < mohrr.S2) mohrr.S2 = mohrr.S1
+        if (mohrr.S2 < mohrr.S3) mohrr.S3 = mohrr.S2
+    }
+    const mohr = gui.addFolder('Mohr');
+    mohr.add(mohrr, 'S1', 0, 10, 0.1).onChange(value => {
+        mohrr.S1 = value
+        checkM()
+        mohrCircle({element: "mohr", width : 200, height: 200, S1: mohrr.S1, S2: mohrr.S2, S3: mohrr.S3, scale: 80})
+    }).listen()
+
+    mohr.add(mohrr, 'S2', 0, 10, 0.1).onChange(value => {
+        mohrr.S2 = value
+        checkM()
+        mohrCircle({element: "mohr", width : 200, height: 200, S1: mohrr.S1, S2: mohrr.S2, S3: mohrr.S3, scale: 80})
+    }).listen()
+
+    mohr.add(mohrr, 'S3', 0, 10, 0.1).onChange(value => {
+        mohrr.S3 = value
+        checkM()
+        mohrCircle({element: "mohr", width : 200, height: 200, S1: mohrr.S1, S2: mohrr.S2, S3: mohrr.S3, scale: 80})
+    }).listen()
+
+    mohr.close()
+
+    // ======================================
+
+    const ofringes = {
+        show: false,
+        azym: 0,
+        decli: 90,
+        spacing: 0.01
+    }
+    
+    const fringes = gui.addFolder('Insar')
+    fringes.add( ofringes, 'show').name('Show')
+    fringes.add(ofringes, 'azym', 0, 180, 1).name('Sat azymuth').onChange(value => {
+    }).listen()
+    fringes.add(ofringes, 'decli', 0, 90, 1).name('Sat declination').onChange(value => {
+    }).listen()
+    fringes.add(ofringes, 'spacing', 0.0001, 0.1, 0.001).name('Fringes spacing').onChange(value => {
+    }).listen()
+
+    
 }

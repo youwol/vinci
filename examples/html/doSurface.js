@@ -6,19 +6,22 @@ function doSurface(df, info) {
 
     if (!position || !indices) return
 
-    const manager = new dataframe.Manager(df, [
-        new math.PositionDecomposer,       // x y z
-        new math.ComponentDecomposer,      // Ux Uy Uz Sxx Sxy Sz Syy Syz Szz
-        new math.VectorNormDecomposer,     // U
-        new math.EigenValuesDecomposer,    // S1 S2 S3
-        new math.EigenVectorsDecomposer,   // S1 S2 S3
-    ])
+    const manager = new dataframe.Manager(df, {
+        decomposers: [
+            new math.PositionDecomposer,       // x y z
+            new math.ComponentDecomposer,      // Ux Uy Uz Sxx Sxy Sz Syy Syz Szz
+            new math.VectorNormDecomposer,     // U
+            new math.EigenValuesDecomposer,    // S1 S2 S3
+            new math.EigenVectorsDecomposer,   // S1 S2 S3
+        ],
+        dimension: 2
+    })
 
     {
-        if (info.deformation.active===true) {
-            const V = manager.serie(3, info.deformation.attr)
+        if (def.show===true) {
+            const V = manager.serie(3, def.attr)
             if (V) {
-                const s = info.deformation.scale
+                const s = def.scale
                 position = dataframe.map([position, V], ([p,v]) => {
                     return [p[0]+v[0]*s, p[1]+v[1]*s, p[2]+v[2]*s]
                 })
@@ -30,13 +33,13 @@ function doSurface(df, info) {
 
     let attr = undefined
     
-    if (info.attr) {
-        attr = manager.serie(1, info.attr)
+    if (isoParams.attr) {
+        attr = manager.serie(1, isoParams.attr)
     }
 
     if (attr) {
         const mM = math.minMaxArray(attr.array)
-        if (info.iso.useMinMax === false) {
+        if (isoParams.userMinMax === false) {
             isoParams.min = mM[0]//.toFixed(5)
             isoParams.max = mM[1]//.toFixed(5)
         }
@@ -47,23 +50,23 @@ function doSurface(df, info) {
         positions: position,
         indices: df.series['indices'],
         parameters: new kepler.SurfaceParameters({
-            flat: info.surface.flat,
+            flat: surfParams.flat,
             wireframe: false,
-            color: info.surface.color !== undefined ? info.surface.color : scolor,
-            opacity: info.surface.opacity,
-            creaseAngle: info.surface.creaseAngle
+            color: surfParams.color !== undefined ? surfParams.color : scolor,
+            opacity: surfParams.opacity,
+            creaseAngle: surfParams.creaseAngle
         })
     })
     //surface.castShadow = true
 
-    if (info.surface.show) {
+    if (surfParams.show) {
         group.add(surface)
         if (attr) {
             kepler.paintAttribute(surface, attr, new kepler.PaintParameters({
                 atVertex: true,
-                lut: info.lut,
-                duplicateLut: info.duplicateLut,
-                reverseLut: info.reverseLut
+                lut: isoParams.colorTable,
+                duplicateLut: isoParams.duplicateLut,
+                reverseLut: isoParams.reverseLut
             }))
         }
     }
@@ -81,7 +84,7 @@ function doSurface(df, info) {
     //     group.add(borders)
     // }
 
-    if (info.points && info.points.show) {
+    if (surfParams.showPoints) {
         const g = new THREE.Group
         group.add(g)
         g.translateZ(0.01)
@@ -89,8 +92,8 @@ function doSurface(df, info) {
         const points = kepler.createPointset({
             position: position,
             parameters: new kepler.PointsetParameters({
-                size: info.points.color !== undefined ? info.points.size : 1,
-                color: info.points.color !== undefined ? info.points.color : undefined
+                size: surfParams.pointSize,
+                color: surfParams.pointColor
             })
         })
         g.add(points)
@@ -170,28 +173,28 @@ function doSurface(df, info) {
         }
     }
 
-    if (attr && info.iso) {
-        let min = info.iso.min
-        let max = info.iso.max
+    if (attr && isoParams.show) {
+        let min = isoParams.min
+        let max = isoParams.max
 
-        if (info.iso.useMinMax === false) {
+        if (isoParams.userMinMax === false) {
             const minmax = dataframe.array.minMax(attr.array)
             min = minmax[0]
             max = minmax[1]
         }
 
-        let iso = undefined    
-        if (info.iso.spacing) {
-            isos = kepler.generateIsosBySpacing(min, max, info.iso.spacing)
+        let isos = undefined    
+        if (isoParams.spacing) {
+            isos = kepler.generateIsosBySpacing(min, max, isoParams.spacing)
         }
-        else if (info.iso.nb) {
-            isos = kepler.generateIsos(min, max, info.iso.nb)
+        else if (isoParams.nb) {
+            isos = kepler.generateIsos(min, max, isoParams.nb)
         }
-        else if (info.iso.list) {
-            isos = kepler.generateIsos(min, max, info.iso.list)
+        else if (isoParams.list) {
+            isos = kepler.generateIsos(min, max, isoParams.list)
         }
         
-        if (info.iso.show && isos) {
+        if (isos) {
             const iso = kepler.createIsoContours(
                 surface,
                 attr, {
@@ -199,12 +202,12 @@ function doSurface(df, info) {
                     color       : '#ffffff',
                     lineColor   : '#000000',
                     isoList     : isos,
-                    filled      : info.iso.showFill,
-                    lined       : info.iso.showLines,
-                    opacity     : info.iso.opacity,
-                    lut         : info.lut,
-                    reverseLut  : info.reverseLut,
-                    duplicateLut: info.duplicateLut,
+                    filled      : isoParams.showFill,
+                    lined       : isoParams.showLines,
+                    opacity     : isoParams.opacity,
+                    lut         : isoParams.lut,
+                    reverseLut  : isoParams.reverseLut,
+                    duplicateLut: isoParams.duplicateLut,
                     min,
                     max
                 })
@@ -213,30 +216,36 @@ function doSurface(df, info) {
         }
     }
 
-    if (info.bands !== undefined && Array.isArray(info.bands)) {
-        info.bands.forEach( sband => {
-            if (manager.contains(1, sband.attr)) {
-                const attr = manager.serie(1, sband.attr)
-                console.log(sband.attr, math.minMax(attr))
-                const band = kepler.createBand(surface, attr, {
-                    parameters: new kepler.BandParameters({
-                        color: sband.color,
-                        from : sband.from,
-                        to   : sband.to,
-                        scale: sband.scale
+    if (info.vectors !== undefined && info.vectors.show === true) {
+        // console.log(manager.names(3))
+        const vattr = manager.serie(3, info.vectors.attr)
+        if (vattr) {
+            if (info.vectors.useTube) {
+                group.add(kepler.createTubeVectors({
+                    geometry: surface.geometry,
+                    vectorField: vattr,
+                    parameters: new kepler.TubeVectorsParameters({
+                        scale: info.vectors.scale,
+                        color: info.vectors.color,
+                        radius: info.vectors.radius,
+                        centered: info.vectors.centered
                     })
-                })
-                if (sband.translate) {
-                    band.translateX(sband.translate[0])
-                    band.translateY(sband.translate[1])
-                    band.translateZ(sband.translate[2])
-                }
-                group.add(band)
+                }))
             }
             else {
-                console.warn('attr', sband.attr, 'does not exist for band.\nPossible names are')
-                console.warn(manager.names(1))
+                group.add(kepler.createVectors({
+                    geometry: surface.geometry,
+                    vectorField: vattr,
+                    parameters: new kepler.TubeVectorsParameters({
+                        scale: info.vectors.scale,
+                        color: info.vectors.color,
+                        centered: info.vectors.centered
+                    })
+                }))
             }
-        })
+        }
+        else {
+            console.warn('cannot find vector attribute' + info.vectors.attr)
+        }
     }
 }

@@ -4,16 +4,6 @@
 <head>
     <meta charset="utf-8">
     <title>Vinci</title>
-    <!-- <script src='/devs/workspace/packages/dataframe/dist/@youwol/dataframe.js'></script>
-    <script src='/devs/workspace/packages/math/dist/@youwol/math.js'></script>
-    <script src='/devs/workspace/packages/geometry/dist/@youwol/geometry.js'></script>
-    <script src='/devs/workspace/packages/io/dist/@youwol/io.js'></script>
-    <script src='/devs/workspace/packages/three-extra/node_modules/three/build/three.min.js'></script>
-    <script src='/devs/workspace/packages/three-extra/node_modules/three/examples/js/controls/TrackballControls.js'></script>
-    <script src='/devs/workspace/packages/three-extra/dist/@youwol/three-extra.js'></script>
-    <script src='/devs/workspace/packages/kepler/dist/@youwol/kepler.js'></script>
-    <script src="/devs/workspace/packages/vinci/node_modules/lil-gui/dist/lil-gui.umd.min.js"></script>
-    <script src="/devs/workspace/packages/vinci/dist/@youwol/vinci.js"></script> -->
     <script src='/node_modules/@youwol/dataframe/dist/@youwol/dataframe.js'></script>
     <script src='/node_modules/@youwol/math/dist/@youwol/math.js'></script>
     <script src='/node_modules/@youwol/geometry/dist/@youwol/geometry.js'></script>
@@ -24,28 +14,25 @@
     <script src='/node_modules/@youwol/kepler/dist/@youwol/kepler.js'></script>
     <script src="/node_modules/lil-gui/dist/lil-gui.umd.min.js"></script>
     <script src="/dist/@youwol/vinci.js"></script>
-    <script src="https://kit.fontawesome.com/daa834e337.js" crossorigin="anonymous"></script>
+    <script src="/node_modules/chroma-js/chroma.js"></script>
 
-    <!-- <script src="https://unpkg.com/d3@5.7.0/dist/d3.min.js"></script> -->
-    <!-- <script src="https://unpkg.com/d3fc@14.0.27/build/d3fc.js"></script> -->
-    <!--
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    -->
-    
+    <script src="https://kit.fontawesome.com/daa834e337.js" crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/d3fc@14.0.27/build/d3fc.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script> -->
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <!-- <div class="loading" id="js-loader">
-        <div class="loader"></div>
-    </div> -->
-    <div class='home-container'>
+    <div class='home-container' style="position: absolute; right: 0%;">
         <span>
-            <div class='buttonIcon' style="position: absolute; right: 80px;">
+            <div class='buttonIcon' style="position: absolute; right: 80px; z-index: 1;">
                 <div id='goHome'><i class='fa fa-home'></i></div>
             </div>
-            <div class='buttonIcon' style="position: absolute; right: 45px;">
+            <div class='buttonIcon' style="position: absolute; right: 45px; z-index: 1;">
                 <div id='saveHome'><i class='fa fa-clinic-medical'></i></div>
             </div>
             <div class='right-container'>
@@ -53,14 +40,37 @@
             </div>
         </span>
     </div>
-    <div id = "gui", style="position: absolute; top: 30px; left: 10px; opacity: 70%;"></div>
 
-    <div class="bottom-1 start-1" style='position: absolute; opacity: 70%; left: 10px; bottom: 0px;'>
-        <a href="https://www.youwol.com/" target="_blank">
-            <img src="youwol.png" style="width: 150px;">
-        </a>
-        <input id="upload" type="file" style="visibility:hidden" accept=".pl"/>
+    <div class="w-100 h-100">
+        <div id="gui" , style="position: absolute; top: 120px; right: 30px; opacity: 70%;"></div>
+        <div id="viewer3d" class="h-100 w-100">
+        </div>
     </div>
+
+    <div class="footer w-100">
+        <div class="bottom-1 start-1" style='position: absolute; opacity: 70%; left: 10px; bottom: 10px;'>
+            <a href="https://www.youwol.com/" target="_blank">
+                <img src="youwol.png" style="width: 150px;">
+            </a>
+            <input id="upload" type="file" style="visibility:hidden" accept=".pl" />
+        </div>
+    </div>
+
+
+
+    <div class="top-1 start-1" style='position: absolute; opacity: 75%; left: 10px; top: 10px'>
+        <div id="mohr" class="card" style="width: 200px; height: 200px; background-color: rgb(193, 193, 193);">
+        </div>
+    </div>
+    <div class="top-1 start-1" style='position: absolute; opacity: 75%; left: 10px; top: 215px'>
+        <div id="rose" class="card" style="width: 200px; height: 200px; background-color: rgb(193, 193, 193);">
+        </div>
+    </div>
+    
+    <!-- <div id="color-scale" style='position: absolute; opacity: 100%; left: 0px; top: 420px'></div> -->
+    <div id="color-scale"></div>
+    
+    
 
     <script type="text/javascript" src='./doSurface.js'></script>
     <script type="text/javascript" src='./doLines.js'></script>
@@ -69,16 +79,20 @@
     <script type="text/javascript" src='./init.js'></script>
     <script type="text/javascript" src='./main.js'></script>
     <script type="text/javascript" src='./gui.js'></script>
+    <script type="text/javascript" src='./mohrCircle.js'></script>
+    <script type="text/javascript" src='./roseDiagram.js'></script>
+    <script type="text/javascript" src='./colorScale.js'></script>
 
     <script>
-        const three     = globalThis['THREE']
+        const three = globalThis['THREE']
         const dataframe = globalThis['@youwol/dataframe']
-        const math      = globalThis['@youwol/math']
-        const geom      = globalThis['@youwol/geometry']
-        const io        = globalThis['@youwol/io']
-        const extra     = globalThis['@youwol/three-extra']
-        const kepler    = globalThis['@youwol/kepler']
-        const vinci     = globalThis['@youwol/vinci']
+        const math = globalThis['@youwol/math']
+        const geom = globalThis['@youwol/geometry']
+        const io = globalThis['@youwol/io']
+        const extra = globalThis['@youwol/three-extra']
+        const kepler = globalThis['@youwol/kepler']
+        const vinci = globalThis['@youwol/vinci']
+        const chroma = globalThis['chroma']
         // const GUI       = lil.GUI
 
         const model = {
@@ -108,27 +122,6 @@
                 attr: 'U',
                 scale: 1
             },
-            iso: {
-                show: true,
-                showFill: true,
-                showLines: true,
-                flat: false,
-                nb: 20,
-                // spacing: 0.1,
-                useMinMax: false,
-                min: 0,
-                max: 1
-            },
-            // streamlines: {
-            //     show: false,
-            //     attr: 'U',
-            //     color: '#000000',
-            //     maximumPointsPerLine: 50,
-            //     dSep: 0.1,
-            //     timeStep: 0.05,
-            //     dTest: 0.08,
-            //     maxTimePerIteration: 1000
-            // },
             borders: {
                 show: true,
                 color: "#000000"
@@ -137,10 +130,18 @@
                 show: false,
                 color: "#ffffff",
                 size: 2
+            },
+            vectors: {
+                show: false,
+                attr: 'S',
+                scale: 1,
+                color: '#000000',
+                useTube: true,
+                radius: .01
             }
         }
 
-        const lineInfo  = {
+        const lineInfo = {
             show: true,
             width: 0.002,
             color: "#000000"
@@ -150,8 +151,38 @@
         regenerateModel()
         postInit()
         connectGui()
+
         extra.changeView('up', { scene, camera, controls })
-        requestAnimationFrame(animate)
+
+        mohrCircle({
+            element: "mohr", 
+            width : 200, 
+            height: 200, 
+            S1: 2, 
+            S2: 1, 
+            S3: 0.5, 
+            scale: 80
+        })
+
+        roseDiagram({
+            data: new Array(500).fill(0).map( v => Math.random()*180 ),
+            element: "rose",
+            width: 200, 
+            height: 200, 
+            margin: {
+                top   : 10,
+                right : 10,
+                bottom: 10,
+                left  : 10
+            }, 
+            innerR: 4, 
+            binArc: 10, 
+            colourFill: "#1d55cf", 
+            gradTickSpacing: 7, 
+            colourHover: "purple"
+        })
+
+        requestAnimationFrame(animate) // general loop
 
     </script>
 </body>
