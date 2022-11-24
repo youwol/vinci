@@ -2,11 +2,10 @@
 function doLines(dfs, lineInfo) {
     dfs.forEach( df => {
         lineDataframe.push(df)
-        // createGlLine(df, lineInfo)
 
         if (lineInfo.show) {
 
-            let position = df.series.positions
+            // let position = df.series.positions
             if (lineInfo.translate) {
                 const t = lineInfo.translate
                 df.series.positions = dataframe.apply(df.series.positions, p => [p[0]+t[0], p[1]+t[1], p[2]+t[2]])
@@ -46,6 +45,18 @@ function doLines(dfs, lineInfo) {
                         reverseLut: lineInfo.reverseLut!==undefined?lineInfo.reverseLut: false
                     }))
                 }
+            }
+            if (lineInfo.showPoints) {
+                const SKIN = kepler.createPointset({
+                    position: df.series.positions,
+                    parameters: new kepler.PointsetParameters({
+                        size: lineInfo.pointSize,
+                        color: lineInfo.pointColor,
+                        // sizeAttenuation: true
+                    })
+                })
+
+                if (SKIN) group.add( SKIN )
             }
         }
     })

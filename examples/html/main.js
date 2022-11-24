@@ -40,7 +40,11 @@ models.set("Spacing", [
 // -----------------------------------------------------------------------------------------
 
 function buildFault(points) {
-    const positions = dataframe.Serie.create( {array: points, itemSize: 3})
+    const positions = dataframe.Serie.create( {
+        array: dataframe.createTyped(Float32Array, points, false),
+        // array: points, 
+        itemSize: 3
+    })
     const idx = []
     for (let i=0; i<positions.count-1; ++i) {
         idx.push(i, i+1)

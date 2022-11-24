@@ -1,4 +1,5 @@
-attributes = []
+attributes  = []
+vattributes = []
 
 function doSurface(df, info) {
     let position = df.series.positions
@@ -29,7 +30,8 @@ function doSurface(df, info) {
         }
     }
     
-    attributes = manager.names(1)
+    attributes  = manager.names(1)
+    vattributes = manager.names(2)
 
     let attr = undefined
     
@@ -173,7 +175,7 @@ function doSurface(df, info) {
         }
     }
 
-    if (attr && isoParams.show) {
+    if (attr && isoParams.show===true) {
         let min = isoParams.min
         let max = isoParams.max
 
@@ -217,8 +219,29 @@ function doSurface(df, info) {
     }
 
     if (info.vectors !== undefined && info.vectors.show === true) {
-        // console.log(manager.names(3))
-        const vattr = manager.serie(3, info.vectors.attr)
+        const vattr2D = manager.serie(2, info.vectors.attr)
+
+        // Convert the 2D vector field into 3D !
+        // const vattr = vattr2D.newInstance({
+        //     count     : vattr2D.count*3/2, 
+        //     itemSize  : vattr2D.itemSize, 
+        //     initialize: false
+        // })
+        let vattr = dataframe.createEmptySerie({
+            Type: Float32Array,
+            count: vattr2D.count,
+            itemSize: 3,
+            dimension: 3,
+            shared: false
+        })
+        for (let i=0; i<vattr.count; ++i) {
+            vattr.setItemAt(i, [...vattr2D.itemAt(i), 0])
+        }
+
+        if (info.vectors.normalize) {
+            vattr = math.normalize(vattr)
+        }
+
         if (vattr) {
             if (info.vectors.useTube) {
                 group.add(kepler.createTubeVectors({
@@ -245,7 +268,7 @@ function doSurface(df, info) {
             }
         }
         else {
-            console.warn('cannot find vector attribute' + info.vectors.attr)
+            console.warn('cannot find vector attribute ' + info.vectors.attr)
         }
     }
 }

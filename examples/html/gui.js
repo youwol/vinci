@@ -16,7 +16,7 @@ obj = {
     upload() {
         document.getElementById('upload').click()
     },
-    optim: true,
+    optim: false,
     optimSampling: 20
 }
 
@@ -53,7 +53,10 @@ const isoParams = {
 const faultParams = {
     show: true,
     width: 0.005,
-    color: '#000000'
+    color: '#000000',
+    showPoints: false,
+    pointColor: '#ffffff',
+    pointSize: 5
 }
 
 const def = {
@@ -74,6 +77,15 @@ const streamLines = {
     translate: [0,0,0.1],
     width: 0.001
 }
+
+// const vectors = {
+//     show: false,
+//     attr: 'U',
+//     color: '#000000',
+//     scale: 1,
+//     radius: 1,
+//     useTube: false
+// }
 
 function connectGui() {
 
@@ -286,6 +298,18 @@ function connectGui() {
 
     // =======================================
 
+    const vectors = gui.addFolder('Vectors')
+    vectors.add( surfaceInfo.vectors, 'show').name('Show').onChange( value => repaint() )
+    // vectors.add( surfaceInfo.vectors, 'attr').name('Attribute').onChange( value => repaint() )
+    vectors.add(surfaceInfo.vectors, 'attr', vattributes).name('Attribute').onChange(value => {
+        // isoParams.attr = value
+        repaint()
+    }).listen()
+    vectors.add( surfaceInfo.vectors, 'scale', 0.01, 1, 0.01).name('Scale').onChange( value => repaint() )
+    vectors.add( surfaceInfo.vectors, 'normalize').name('Normalize').onChange( value => repaint() )
+
+    // =======================================
+
     const deform = gui.addFolder('Deform')
     deform.add(def, 'show').name('Active').onChange(value => {
         // surfaceInfo.deformation.active = value
@@ -300,13 +324,20 @@ function connectGui() {
     // =======================================
 
     const displayL = gui.addFolder('Fault(s)')
+    displayL.add(faultParams, "show", 1, 10, 1).name('Show').onChange( value => {
+        repaint()
+    })
     displayL.add( faultParams, 'width', 0.0001, 0.05, 0.001).name('Line width').onChange( value => {
-        // lineInfo.width = value
         repaint()
     })
     displayL.addColor(colorLine, 'string').name('Color').onChange(value => {
-        // console.log(value)
-        // faultParams.color = value
+        repaint()
+    })
+
+    displayL.add(faultParams, "showPoints").name('Show points').onChange( value => {
+        repaint()
+    })
+    displayL.add(faultParams, "pointSize", 1, 10, 1).name('Points size').onChange( value => {
         repaint()
     })
     displayL.close()
