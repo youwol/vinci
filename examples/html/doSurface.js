@@ -5,7 +5,9 @@ function doSurface(df, info) {
     let position = df.series.positions
     let indices = df.series.indices
 
-    if (!position || !indices) return
+    if (!position || !indices) {
+        return
+    }
 
     const manager = new dataframe.Manager(df, {
         decomposers: [

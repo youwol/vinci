@@ -11,7 +11,7 @@ export class Material {
     private pr1_ = 1 - 2 * this.pr
     private pr2_ = 2 * (1 - this.pr)
 
-    constructor(poisson: number, young: number, density: number = 1) {
+    constructor(poisson: number, young: number, density = 1) {
         this.pr = poisson
         this.e = young
         this.rho = density

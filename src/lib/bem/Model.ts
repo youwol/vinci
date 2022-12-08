@@ -57,7 +57,9 @@ export class Model {
      */
     tooClose(p: Point, delta = 1): boolean {
         for (let i = 0; i < this.faults_.length; ++i) {
-            if (this.faults_[i].tooClose(p, delta)) return true
+            if (this.faults_[i].tooClose(p, delta)) {
+                return true
+            }
         }
         return false
     }

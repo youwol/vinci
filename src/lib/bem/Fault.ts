@@ -84,7 +84,9 @@ export class Fault {
      */
     tooClose(p: Point, delta = 1): boolean {
         for (let i = 0; i < this.segs_.length; ++i) {
-            if (this.segs_[i].tooClose(p, delta)) return true
+            if (this.segs_[i].tooClose(p, delta)) {
+                return true
+            }
         }
         return false
     }

@@ -41,7 +41,9 @@ function mohrCircle({ element, width, height, S1, S2, S3, scale = 100 }) {
 
     // Normalizing everything between 0 and 1
     const m = Math.max(r1, r2, r3)
-    if (m === 0) m === 1
+    if (m === 0) {
+        m === 1
+    }
     r1 /= m
     r2 /= m
     r3 /= m

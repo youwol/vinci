@@ -112,10 +112,11 @@ export class Seidel implements Solver {
             })
 
             if (iter > this.maxIter_) {
-                if (this.warCB)
+                if (this.warCB) {
                     this.warCB(
                         `solver max iter reached (${this.maxIter_}). Exiting...`,
                     )
+                }
                 break
             }
 

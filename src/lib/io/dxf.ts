@@ -13,13 +13,12 @@ Calque 1
 0
 */
 
-import { Vector } from '../types'
 //import { Serie } from "@youwol/dataframe"s
 
 export type DxfReturnType = [number, number, number, number][]
 
 export function dxfDecoder(buffer: string): DxfReturnType {
-    let lines = buffer.split('\n')
+    const lines = buffer.split('\n')
 
     const segments: DxfReturnType = []
 
@@ -31,7 +30,7 @@ export function dxfDecoder(buffer: string): DxfReturnType {
             }
             const line = lines[i++]
             if (line.length !== 0) {
-                let r = line.split(' ')
+                const r = line.split(' ')
                 if (r.length !== 0) {
                     return r
                 }
@@ -40,7 +39,7 @@ export function dxfDecoder(buffer: string): DxfReturnType {
     }
 
     while (true) {
-        let r = nextLine()
+        const r = nextLine()
         if (r === undefined) {
             break
         }

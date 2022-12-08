@@ -1,5 +1,4 @@
-import { Matrix, Vectord } from './types'
-import { Point, Vector, Stress } from './types'
+import { Matrix, Vectord, Point, Vector, Stress } from './types'
 
 /**
  * @category Math
@@ -223,7 +222,9 @@ export class Lu {
                     sum -= this.a_[i - 1][j - 1] * bb[j - 1]
                 }
             } else {
-                if (sum) ii = i
+                if (sum) {
+                    ii = i
+                }
             }
             bb[i - 1] = sum
         }
@@ -269,10 +270,13 @@ export class Lu {
         for (let i = 1; i <= this.n_; i++) {
             big = 0
             for (let j = 1; j <= this.n_; j++) {
-                if ((temp = Math.abs(this.a_[i - 1][j - 1])) > big) big = temp
+                if ((temp = Math.abs(this.a_[i - 1][j - 1])) > big) {
+                    big = temp
+                }
             }
-            if (big == 0)
+            if (big == 0) {
                 throw new Error('Singular matrix in routine lu.decompose')
+            }
             vv[i - 1] = 1.0 / big
         }
         for (let j = 1; j <= this.n_; j++) {

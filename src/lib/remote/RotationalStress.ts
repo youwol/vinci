@@ -5,11 +5,11 @@ import { BaseRemoteStress } from './BaseRemoteStress'
  * @category Remote
  */
 export class RotationalStress implements BaseRemoteStress {
-    private theta_: number = 0
-    private S1_: number = 0
-    private S2_: number = 0
-    private s: number = 0
-    private c: number = 0
+    private theta_ = 0
+    private S1_ = 0
+    private S2_ = 0
+    private s = 0
+    private c = 0
 
     constructor(S1: number, S2: number, theta: number) {
         this.theta_ = theta

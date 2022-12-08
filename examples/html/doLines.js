@@ -72,7 +72,9 @@ function doLines(dfs, lineInfo) {
                     }),
                 })
 
-                if (SKIN) group.add(SKIN)
+                if (SKIN) {
+                    group.add(SKIN)
+                }
             }
         }
     })

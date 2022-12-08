@@ -24,7 +24,9 @@ export class BBox {
                     this.min_[i] = Max
                     this.max_[i] = Max
                 }
-                if (Max < min) this.empty_ = true
+                if (Max < min) {
+                    this.empty_ = true
+                }
             }
         }
     }
@@ -62,8 +64,8 @@ export class BBox {
     }
 
     scale(s: number) {
-        let r1 = add(scale(create(this.center, this.min), s), this.center)
-        let r2 = add(scale(create(this.center, this.max), s), this.center)
+        const r1 = add(scale(create(this.center, this.min), s), this.center)
+        const r2 = add(scale(create(this.center, this.max), s), this.center)
         this.min_ = r1
         this.max_ = r2
     }
@@ -75,8 +77,12 @@ export class BBox {
             this.grow(p.max)
         } else {
             for (let i = 0; i < 2; ++i) {
-                if (p[i] < this.min_[i]) this.min_[i] = p[i]
-                if (p[i] > this.max_[i]) this.max_[i] = p[i]
+                if (p[i] < this.min_[i]) {
+                    this.min_[i] = p[i]
+                }
+                if (p[i] > this.max_[i]) {
+                    this.max_[i] = p[i]
+                }
             }
         }
     }

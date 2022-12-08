@@ -472,8 +472,12 @@ function connectGui() {
         S3: 0.5,
     }
     function checkM() {
-        if (mohrr.S1 < mohrr.S2) mohrr.S2 = mohrr.S1
-        if (mohrr.S2 < mohrr.S3) mohrr.S3 = mohrr.S2
+        if (mohrr.S1 < mohrr.S2) {
+            mohrr.S2 = mohrr.S1
+        }
+        if (mohrr.S2 < mohrr.S3) {
+            mohrr.S3 = mohrr.S2
+        }
     }
     const mohr = gui.addFolder('Mohr')
     mohr.add(mohrr, 'S1', 0, 10, 0.1)

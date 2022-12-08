@@ -77,7 +77,9 @@ function postInit() {
     keyboard.addKey({
         key: ' ',
         cb: (e) => {
-            if (cube) cube.restoreView()
+            if (cube) {
+                cube.restoreView()
+            }
         },
     })
 

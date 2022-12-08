@@ -245,7 +245,9 @@ export class Segment {
     }
 
     private displCoeff(p: Point): DisplCoeff {
-        if (this.mat === undefined) throw new Error('material is not set')
+        if (this.mat === undefined) {
+            throw new Error('material is not set')
+        }
 
         const con = this.mat.con
         const pr1 = this.mat.pr1
@@ -301,7 +303,9 @@ export class Segment {
         // for the 2 coordinates (shear and normal)
         //
 
-        if (this.mat === undefined) throw new Error('material is not set')
+        if (this.mat === undefined) {
+            throw new Error('material is not set')
+        }
 
         const con = this.mat.con
         const cons = this.mat.cons
@@ -352,7 +356,9 @@ export class Segment {
         displ: DisplCoeff
         stress: StressCoeff
     } {
-        if (this.mat === undefined) throw new Error('material is not set')
+        if (this.mat === undefined) {
+            throw new Error('material is not set')
+        }
 
         const con = this.mat.con
         const pr1 = this.mat.pr1

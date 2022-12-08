@@ -29,7 +29,9 @@ export class System {
     }
 
     solve(): number {
-        if (this.dof_ === 0) return
+        if (this.dof_ === 0) {
+            return
+        }
 
         // Compute B_
         this.getTotalTraction(this.x_)
@@ -139,7 +141,7 @@ export class System {
                                         -Tij[i][j] // Neumann for e2 goes to B_
                                     ++cplus
                                 } else {
-                                    let v = Tij[i][j] * e2.burger[j] // Dirichlet for e2 in cst rhs
+                                    const v = Tij[i][j] * e2.burger[j] // Dirichlet for e2 in cst rhs
                                     this.cstRhs_[row + rplus] -= v
                                 }
                             }

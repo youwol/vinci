@@ -87,7 +87,7 @@ export class FaultBuilder {
     /**
      * Subdivide each segment in n sub-segments
      */
-    subdivide(n: number = 2) {
+    subdivide(n = 2) {
         if (n < 2) {
             return this
         }

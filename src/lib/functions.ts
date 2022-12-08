@@ -1,6 +1,6 @@
 import { Model } from './bem/Model'
 import { BaseRemoteStress } from './remote'
-import { add, dist2 } from './math'
+import { dist2 } from './math'
 import { Fault } from './bem/Fault'
 import { Segment } from './bem/Segment'
 import { Stress, Normal, Traction, Point } from './types'
