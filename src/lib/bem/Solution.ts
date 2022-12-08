@@ -6,8 +6,7 @@ import { Serie, createFrom } from '@youwol/dataframe'
  * @category Core
  */
 export class Solution {
-    constructor(private model: Model) {
-    }
+    constructor(private model: Model) {}
 
     // Todo: (local = true, atSegment = true)
     /**
@@ -17,12 +16,12 @@ export class Solution {
      */
     burgers() {
         const sol: Array<Array<number>> = []
-        this.model.faults.forEach( fault => {
+        this.model.faults.forEach((fault) => {
             const u = []
-            fault.elements.forEach( e => u.push(e.burger[0], e.burger[1]) )
+            fault.elements.forEach((e) => u.push(e.burger[0], e.burger[1]))
             sol.push(u)
         })
-        
+
         return sol
     }
 
@@ -41,16 +40,20 @@ export class Solution {
         //     itemSize: 2
         // })
         const sol = Serie.create({
-            array: createFrom({array: pts.array, count: pts.count, itemSize: isize}),
+            array: createFrom({
+                array: pts.array,
+                count: pts.count,
+                itemSize: isize,
+            }),
             itemSize: isize,
-            dimension: 2
+            dimension: 2,
         })
 
         let j = 0
-        pts.forEach( (p, i) => {
-            const u: Displ = [0,0]
-            this.model.faults.forEach( fault => {
-                fault.elements.forEach( e => {
+        pts.forEach((p, i) => {
+            const u: Displ = [0, 0]
+            this.model.faults.forEach((fault) => {
+                fault.elements.forEach((e) => {
                     const du = e.displ(p)
                     u[0] += du[0]
                     u[1] += du[1]
@@ -74,15 +77,19 @@ export class Solution {
         }
 
         const sol = Serie.create({
-            array: createFrom({array: pts.array, count: pts.count, itemSize: 3}),
+            array: createFrom({
+                array: pts.array,
+                count: pts.count,
+                itemSize: 3,
+            }),
             itemSize: 3,
-            dimension: 2
+            dimension: 2,
         })
         let j = 0
-        pts.forEach( p => {
-            const s: Stress = [0,0,0]
-            this.model.faults.forEach( fault => {
-                fault.elements.forEach( e => {
+        pts.forEach((p) => {
+            const s: Stress = [0, 0, 0]
+            this.model.faults.forEach((fault) => {
+                fault.elements.forEach((e) => {
                     const ds = e.stress(p)
                     s[0] += ds[0]
                     s[1] += ds[1]

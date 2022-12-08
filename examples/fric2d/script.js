@@ -9,23 +9,23 @@ const model = new vinci.Model()
 
 const builder = new vinci.FaultBuilder()
 builder
-     .addPoint([0,0])
-     .addPoint([1,1])
+    .addPoint([0, 0])
+    .addPoint([1, 1])
     //  .subdivide(2)
-     .setBcType('tt')
-     .addTo(model)
+    .setBcType('tt')
+    .addTo(model)
 
 const fault = builder.fault
-fault.elements.forEach( s => {
+fault.elements.forEach((s) => {
     console.log(s.begin, s.end)
 })
 
-
-const remote = new vinci.UserRemoteStress( p => [0, 0, p[1]*9.81])
+const remote = new vinci.UserRemoteStress((p) => [0, 0, p[1] * 9.81])
 model.addRemote(remote)
 
-const solver = new vinci.Seidel( {model, maxIter: 1000} )
-solver.iterationCB = (convergence, iteration) => console.log('iter: ', iteration, convergence)
+const solver = new vinci.Seidel({ model, maxIter: 1000 })
+solver.iterationCB = (convergence, iteration) =>
+    console.log('iter: ', iteration, convergence)
 solver.run()
 
 const solution = new vinci.Solution(model)

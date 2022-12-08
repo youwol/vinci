@@ -1,58 +1,58 @@
 {
-  "name": "@youwol/vinci",
-  "version": "0.0.0",
-  "description": "",
-  "author": "fmaerten",
-  "keywords": [],
-  "main": "dist/@youwol/vinci.js",
-  "types": "src/index.ts",
-  "scripts": {
-    "build": "yarn build:dev",
-    "build:dev": "webpack --mode development",
-    "build:prod": "webpack --mode production",
-    "test": "jest -c ./jest.config.js --rootDir .",
-    "test-coverage": "jest -c ./jest.config.js --rootDir . --collect-coverage --collectCoverageFrom=./src/lib/**/*.ts ",
-    "doc": "rm -fr dist/docs && typedoc src/ src/examples --exclude src/lib --exclude src/tests --media ./media --excludePrivate --disableSources --out dist/docs --includeVersion --hideGenerator",
-    "publish-npm-public": "yarn build:prod && yarn test-coverage && yarn publish --access public",
-    "__serve": "http-server ../../../.. -p 92 -o /devs/workspace/packages/vinci/examples/html/index.html",
-    "serve": "http-server . -p 92 -o /examples/html/index.html"
-  },
-  "devDependencies": {
-    "@types/filesystem": "0.0.32",
-    "@types/jest": "29.2.3",
-    "@types/node": "18.11.9",
-    "@youwol/dataframe": "^0.0.37",
-    "@youwol/geometry": "^0.0.21",
-    "@youwol/io": "^0.0.25-wip",
-    "@youwol/kepler": "^0.0.13",
-    "@youwol/math": "^0.0.26",
-    "@youwol/prettier-config": "^0.0.2",
-    "@youwol/three-extra": "^0.0.10",
-    "eslint": "8.28.0",
-    "jest": "29.3.1",
-    "jest-environment-jsdom": "^29.3.1",
-    "jest-junit": "15.0.0",
-    "lil-gui": "^0.17.0",
-    "prettier": "^2.7.1",
-    "prettier-plugin-properties": "^0.2.0",
-    "three": "0.146.0",
-    "ts-jest": "29.0.3",
-    "ts-loader": "9.4.1",
-    "tslib": "^2.4.1",
-    "typedoc": "^0.23.21",
-    "typescript": "4.9.3",
-    "webpack": "5.75.0",
-    "webpack-cli": "5.0.0"
-  },
-  "youwol": {
-    "pipeline": {
-      "name": "yw_pipeline_webpack_ts",
-      "version": "0.0.0"
+    "name": "@youwol/vinci",
+    "version": "0.0.0",
+    "description": "",
+    "author": "fmaerten",
+    "keywords": [],
+    "main": "dist/@youwol/vinci.js",
+    "types": "src/index.ts",
+    "scripts": {
+        "build": "yarn build:dev",
+        "build:dev": "webpack --mode development",
+        "build:prod": "webpack --mode production",
+        "test": "jest -c ./jest.config.js --rootDir .",
+        "test-coverage": "jest -c ./jest.config.js --rootDir . --collect-coverage --collectCoverageFrom=./src/lib/**/*.ts ",
+        "doc": "rm -fr dist/docs && typedoc src/ src/examples --exclude src/lib --exclude src/tests --media ./media --excludePrivate --disableSources --out dist/docs --includeVersion --hideGenerator",
+        "publish-npm-public": "yarn build:prod && yarn test-coverage && yarn publish --access public",
+        "__serve": "http-server ../../../.. -p 92 -o /devs/workspace/packages/vinci/examples/html/index.html",
+        "serve": "http-server . -p 92 -o /examples/html/index.html"
     },
-    "cdnDependencies": {}
-  },
-  "prettier": "@youwol/prettier-config",
-  "dependencies": {
-    "chroma-js": "^2.4.2"
-  }
+    "devDependencies": {
+        "@types/filesystem": "0.0.32",
+        "@types/jest": "29.2.3",
+        "@types/node": "18.11.9",
+        "@youwol/dataframe": "^0.0.37",
+        "@youwol/geometry": "^0.0.21",
+        "@youwol/io": "^0.0.25-wip",
+        "@youwol/kepler": "^0.0.13",
+        "@youwol/math": "^0.0.26",
+        "@youwol/prettier-config": "^0.0.2",
+        "@youwol/three-extra": "^0.0.10",
+        "eslint": "8.28.0",
+        "jest": "29.3.1",
+        "jest-environment-jsdom": "^29.3.1",
+        "jest-junit": "15.0.0",
+        "lil-gui": "^0.17.0",
+        "prettier": "^2.7.1",
+        "prettier-plugin-properties": "^0.2.0",
+        "three": "0.146.0",
+        "ts-jest": "29.0.3",
+        "ts-loader": "9.4.1",
+        "tslib": "^2.4.1",
+        "typedoc": "^0.23.21",
+        "typescript": "4.9.3",
+        "webpack": "5.75.0",
+        "webpack-cli": "5.0.0"
+    },
+    "youwol": {
+        "pipeline": {
+            "name": "yw_pipeline_webpack_ts",
+            "version": "0.0.0"
+        },
+        "cdnDependencies": {}
+    },
+    "prettier": "@youwol/prettier-config",
+    "dependencies": {
+        "chroma-js": "^2.4.2"
+    }
 }

@@ -1,4 +1,4 @@
-import { Point, Stress } from "../types"
+import { Point, Stress } from '../types'
 
 export type FunctionalRemote = (p: Point) => Stress
 

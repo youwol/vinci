@@ -2,26 +2,31 @@ const PIO2 = Math.PI / 2
 const O2 = 1 / 2
 
 function mohrCircle({ element, width, height, S1, S2, S3, scale = 100 }) {
-    const transformX = x => x * scale + tx
-    const transformY = y => height + y * scale - ty
+    const transformX = (x) => x * scale + tx
+    const transformY = (y) => height + y * scale - ty
     const makeCircle = (x, y, r, fill = 'none', color = 'black') => {
-        svg.append("path")
-            .attr("transform", `translate(${transformX(x)}, ${transformY(y)})`)
-            .attr("d", d3.arc()
-                .innerRadius(0)
-                .outerRadius(r * scale)
-                .startAngle(-PIO2)
-                .endAngle(PIO2)
+        svg.append('path')
+            .attr('transform', `translate(${transformX(x)}, ${transformY(y)})`)
+            .attr(
+                'd',
+                d3
+                    .arc()
+                    .innerRadius(0)
+                    .outerRadius(r * scale)
+                    .startAngle(-PIO2)
+                    .endAngle(PIO2),
             )
             .attr('fill', fill) // or black
             .attr('stroke-width', '1')
             .attr('stroke', color)
     }
-    const drawSigma = (x, id) => svg.append("text")
-        .attr('x', transformX(x / m - 0.1))
-        .attr('y', transformY(0.15))
-        .attr("dy", ".35em")
-        .text(`σ${id}`)
+    const drawSigma = (x, id) =>
+        svg
+            .append('text')
+            .attr('x', transformX(x / m - 0.1))
+            .attr('y', transformY(0.15))
+            .attr('dy', '.35em')
+            .text(`σ${id}`)
 
     // let scale = 120
     let tx = width / 2
@@ -46,11 +51,12 @@ function mohrCircle({ element, width, height, S1, S2, S3, scale = 100 }) {
 
     tx = width / 2 - c2 * scale - 10
 
-    const svg = d3.select(`#${element}`)
+    const svg = d3
+        .select(`#${element}`)
         .html(null) // clear the element
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height)
 
     makeCircle(c2, 0, r2, 'white')
     makeCircle(c1, 0, r1, 'gray')
@@ -74,16 +80,15 @@ function mohrCircle({ element, width, height, S1, S2, S3, scale = 100 }) {
     //     .text('σ')
 
     // Axis Y
-    svg.append("line")
-        .attr("x1", transformX(0))
-        .attr("x2", transformX(0))
-        .attr("y1", transformY(0))
-        .attr("y2", transformY(-1.2))
-        .attr("stroke", "black")
-    svg.append("text")
-        .attr('x', transformX(- 0.1))
+    svg.append('line')
+        .attr('x1', transformX(0))
+        .attr('x2', transformX(0))
+        .attr('y1', transformY(0))
+        .attr('y2', transformY(-1.2))
+        .attr('stroke', 'black')
+    svg.append('text')
+        .attr('x', transformX(-0.1))
         .attr('y', transformY(-1.2))
-        .attr("dy", ".35em")
+        .attr('dy', '.35em')
         .text('τ')
 }
-

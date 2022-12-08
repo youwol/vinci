@@ -1,25 +1,26 @@
-import { Fault, Model, RemoteStress, Segment, Seidel } from ".."
+import { Fault, Model, RemoteStress, Segment, Seidel } from '..'
 
 test('construction', () => {
     const model = new Model()
     const fault = new Fault()
-    fault.addElement( new Segment([0,0], [1,1]) )
+    fault.addElement(new Segment([0, 0], [1, 1]))
     model.addFault(fault)
 })
 
 test('solver', () => {
-    const fault = new Fault([0,0, 1,1, 2,2])
-    fault.bcType  = ['t', 't']
+    const fault = new Fault([0, 0, 1, 1, 2, 2])
+    fault.bcType = ['t', 't']
     fault.burgers = [0, 0]
 
     console.log(fault.burgers)
 
     const model = new Model()
     model.addFault(fault)
-    model.addRemote( new RemoteStress([1, 0, 2]) )
+    model.addRemote(new RemoteStress([1, 0, 2]))
 
-    const solver = new Seidel({model})
-    solver.iterationCB = (convergence, iteration) => console.log(iteration, convergence)
+    const solver = new Seidel({ model })
+    solver.iterationCB = (convergence, iteration) =>
+        console.log(iteration, convergence)
     solver.run()
 
     console.log(fault.burgers)

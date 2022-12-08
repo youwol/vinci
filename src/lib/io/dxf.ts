@@ -13,12 +13,12 @@ Calque 1
 0
 */
 
-import { Vector } from "../types"
+import { Vector } from '../types'
 //import { Serie } from "@youwol/dataframe"s
 
 export type DxfReturnType = [number, number, number, number][]
 
-export function dxfDecoder(buffer: string) : DxfReturnType {
+export function dxfDecoder(buffer: string): DxfReturnType {
     let lines = buffer.split('\n')
 
     const segments: DxfReturnType = []
@@ -38,14 +38,16 @@ export function dxfDecoder(buffer: string) : DxfReturnType {
             }
         }
     }
-    
+
     while (true) {
         let r = nextLine()
         if (r === undefined) {
             break
         }
         if (r[0] === 'LINE') {
-            nextLine(); nextLine(); nextLine()
+            nextLine()
+            nextLine()
+            nextLine()
             const x1 = parseFloat(nextLine()[0])
             nextLine()
             const y1 = parseFloat(nextLine()[0])
@@ -53,10 +55,15 @@ export function dxfDecoder(buffer: string) : DxfReturnType {
             const x2 = parseFloat(nextLine()[0])
             nextLine()
             const y2 = parseFloat(nextLine()[0])
-            segments.push([x1,y1, x2,y2])
+            segments.push([x1, y1, x2, y2])
         }
     }
-return segments
+    return segments
 }
 
-const trimAll = (s: string) => s.replace(/\s+/g, ' ').replace(/^\s+|\s+$/, '').replace('\t', ' ').trimEnd()
+const trimAll = (s: string) =>
+    s
+        .replace(/\s+/g, ' ')
+        .replace(/^\s+|\s+$/, '')
+        .replace('\t', ' ')
+        .trimEnd()
