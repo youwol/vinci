@@ -6,11 +6,10 @@ src/auto_generated.ts
 
 .yw_pipeline/__pycache__
 
-dist/lib
-dist/@youwol
-dist/index.d.ts
-dist/examples/
-dist/tests/
+/dist/*
+!/dist/docs/
+!/dist/docs/*
+!/dist/docs/**/*
 
 sources/
 
