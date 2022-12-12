@@ -1,10 +1,10 @@
-import { Point, Vectord } from "../types"
-import { Material } from "./Material"
-import { BC, Segment } from "./Segment"
-import { BBox } from "../utils/BBox"
-import { Tic, Dic } from "./inequalities"
-import { Serie } from "@youwol/dataframe"
-import { FaultBuilder } from "../utils/FaultBuilder"
+import { Point, Vectord } from '../types'
+import { Material } from './Material'
+import { BC, Segment } from './Segment'
+import { BBox } from '../utils/BBox'
+import { Tic, Dic } from './inequalities'
+import { Serie } from '@youwol/dataframe'
+import { FaultBuilder } from '../utils/FaultBuilder'
 
 /**
  * @category Core
@@ -20,13 +20,15 @@ export class Fault {
         if (points) {
             const b = new FaultBuilder()
             b.setPoints(points)
-            b.fault.elements.forEach( seg => this.addElement(seg))
+            b.fault.elements.forEach((seg) => this.addElement(seg))
         }
     }
 
-    get elements() {return this.segs_}
+    get elements() {
+        return this.segs_
+    }
     get dof() {
-        return this.segs_.reduce( (cur,seg) => cur+seg.dof, 0)
+        return this.segs_.reduce((cur, seg) => cur + seg.dof, 0)
     }
 
     addElement(s: Segment) {
@@ -38,7 +40,7 @@ export class Fault {
 
     /**
      * Add a traction inequality constraint.
-     * 
+     *
      * Example
      * ```js
      * const f = new Fault()
@@ -58,7 +60,7 @@ export class Fault {
 
     /**
      * Add a displacement inequality constraint
-     * 
+     *
      * Example
      * ```js
      * const f = new Fault()
@@ -80,9 +82,11 @@ export class Fault {
     /**
      * Check if point p is too close to an element
      */
-    tooClose(p: Point, delta=1): boolean {
-        for (let i=0; i<this.segs_.length; ++i) {
-            if (this.segs_[i].tooClose(p, delta)) return true
+    tooClose(p: Point, delta = 1): boolean {
+        for (let i = 0; i < this.segs_.length; ++i) {
+            if (this.segs_[i].tooClose(p, delta)) {
+                return true
+            }
         }
         return false
     }
@@ -92,28 +96,36 @@ export class Fault {
      */
     get bounds(): BBox {
         const b = new BBox()
-        this.segs_.forEach( seg => {
+        this.segs_.forEach((seg) => {
             b.grow(seg.begin)
             b.grow(seg.end)
         })
         return b
     }
 
-    get bcType() {return this.bc}
+    get bcType() {
+        return this.bc
+    }
 
     /**
-     * Set the type of boundary conditions. Possible string values are `tt`, `bb`, `tb` or `bt` 
+     * Set the type of boundary conditions. Possible string values are `tt`, `bb`, `tb` or `bt`
      */
     set bcType(bc: [BC | string, BC | string]) {
-        for (let i=0; i<2; ++i) {
+        for (let i = 0; i < 2; ++i) {
             if (typeof bc[i] === 'string') {
-                switch(bc[i]) {
-                    case 't': this.setBcType_(i, BC.Traction); break
-                    case 'b': this.setBcType_(i, BC.Burger); break
-                    default: throw new Error(`Unknown bc type ${bc}. Should be "t" or "b"`)
+                switch (bc[i]) {
+                    case 't':
+                        this.setBcType_(i, BC.Traction)
+                        break
+                    case 'b':
+                        this.setBcType_(i, BC.Burger)
+                        break
+                    default:
+                        throw new Error(
+                            `Unknown bc type ${bc}. Should be "t" or "b"`,
+                        )
                 }
-            }
-            else {
+            } else {
                 this.setBcType_(i, bc[i] as BC)
             }
         }
@@ -133,36 +145,40 @@ export class Fault {
     set burgers(burgers: Serie | Vectord) {
         if (burgers instanceof Serie) {
             if (burgers.itemSize < 2) {
-                throw new Error(`burgers itemSize (${burgers.itemSize}) should be >= 2`)
+                throw new Error(
+                    `burgers itemSize (${burgers.itemSize}) should be >= 2`,
+                )
             }
             if (burgers.count !== this.elements.length) {
-                throw new Error(`burgers count (${burgers.count}) should be equals to the number of segments (${this.elements.length})`)
+                throw new Error(
+                    `burgers count (${burgers.count}) should be equals to the number of segments (${this.elements.length})`,
+                )
             }
-            this.elements.forEach( (e, i) => {
+            this.elements.forEach((e, i) => {
                 const b = burgers.itemAt(i)
                 e.burger = [b[0], b[1]]
             })
-        }
-        else if (Array.isArray(burgers) && burgers.length === this.elements.length*2) {
-            this.elements.forEach( (e, i) => {
+        } else if (
+            Array.isArray(burgers) &&
+            burgers.length === this.elements.length * 2
+        ) {
+            this.elements.forEach((e, i) => {
                 //const b = burgers.itemAt(i)
-                e.burger = [burgers[2*i], burgers[2*i+1]]
+                e.burger = [burgers[2 * i], burgers[2 * i + 1]]
             })
-        }
-        else if (Array.isArray(burgers) && burgers.length===2) {
-            this.elements.forEach( (e, i) => {
+        } else if (Array.isArray(burgers) && burgers.length === 2) {
+            this.elements.forEach((e, i) => {
                 //const b = burgers.itemAt(i)
                 e.burger = [burgers[0], burgers[1]]
             })
-        }
-        else {
+        } else {
             throw new Error("don't know how to set the burgers (bad argument)")
         }
     }
 
     get burgers() {
         const r: Vectord = []
-        this.elements.forEach( e => {
+        this.elements.forEach((e) => {
             r.push(...e.burger)
         })
         return r
@@ -173,7 +189,7 @@ export class Fault {
      */
     private setBcType_(i: number, bc: BC) {
         this.bc[i] = bc
-        this.segs_.forEach( seg => {
+        this.segs_.forEach((seg) => {
             seg.setBcType(i, bc)
         })
     }
@@ -183,7 +199,7 @@ export class Fault {
      */
     set material(mat: Material) {
         this.material_ = mat
-        this.segs_.forEach( seg => {
+        this.segs_.forEach((seg) => {
             seg.setMaterial(mat)
         })
     }

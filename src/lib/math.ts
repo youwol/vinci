@@ -1,42 +1,41 @@
-import { Matrix, Vectord } from './types'
-import { Point, Vector, Stress } from './types'
+import { Matrix, Vectord, Point, Vector, Stress } from './types'
 
 /**
  * @category Math
  */
 export function dist(v: Point, w: Point) {
-    return Math.sqrt(dist2(v,w))
+    return Math.sqrt(dist2(v, w))
 }
 
 /**
  * @category Math
  */
 export function dist2(v: Point, w: Point) {
-    return (v[0] - w[0])**2 + (v[1] - w[1])**2
+    return (v[0] - w[0]) ** 2 + (v[1] - w[1]) ** 2
 }
 
 /**
  * @category Math
  */
 export function create(v1: Vector, v2: Vector): Vector {
-    return [v2[0]-v1[0], v2[1]-v1[1]]
+    return [v2[0] - v1[0], v2[1] - v1[1]]
 }
 
 /**
  * @category Math
  */
 export function norm(v: Vector): number {
-    return Math.sqrt( v[0]**2 + v[1]**2 )
+    return Math.sqrt(v[0] ** 2 + v[1] ** 2)
 }
 export function norm2(v: Vector): number {
-    return v[0]**2 + v[1]**2
+    return v[0] ** 2 + v[1] ** 2
 }
 
 /**
  * @category Math
  */
 export function normVec(v1: Vector, v2: Vector): number {
-    return Math.sqrt( (v2[0]-v1[0])**2 + (v2[1]-v1[1])**2 )
+    return Math.sqrt((v2[0] - v1[0]) ** 2 + (v2[1] - v1[1]) ** 2)
 }
 
 /**
@@ -63,7 +62,7 @@ export function copyStress(v1: Stress, v2: Stress) {
  * @category Math
  */
 export function add(v1: Vector, v2: Vector): Vector {
-    return [v2[0]+v1[0], v2[1]+v1[1]]
+    return [v2[0] + v1[0], v2[1] + v1[1]]
 }
 
 /**
@@ -71,7 +70,7 @@ export function add(v1: Vector, v2: Vector): Vector {
  * @category Math
  */
 export function addStress(v1: Stress, v2: Stress): Stress {
-    return [v2[0]+v1[0], v2[1]+v1[1], v2[2]+v1[2]]
+    return [v2[0] + v1[0], v2[1] + v1[1], v2[2] + v1[2]]
 }
 
 /**
@@ -79,7 +78,7 @@ export function addStress(v1: Stress, v2: Stress): Stress {
  * @category Math
  */
 export function sub(v1: Vector, v2: Vector): Vector {
-    return [v2[0]-v1[0], v2[1]-v1[1]]
+    return [v2[0] - v1[0], v2[1] - v1[1]]
 }
 
 /**
@@ -87,14 +86,14 @@ export function sub(v1: Vector, v2: Vector): Vector {
  * @category Math
  */
 export function scale(v: Vector, scale: number): Vector {
-    return [v[0]*scale, v[1]*scale]
+    return [v[0] * scale, v[1] * scale]
 }
 
 // -----------------------------------------------------------
 
 export function allocMatrix(m: number, n: number) {
     const A = new Array(m).fill(undefined)
-    for (let i=0; i<m; ++i) {
+    for (let i = 0; i < m; ++i) {
         A[i] = new Array(n).fill(0)
     }
     return A
@@ -115,7 +114,7 @@ export function multVec(A: Matrix, b: Vectord, result: Vectord) {
 
 // Performes: `b = a + b`
 export function addVec(a: Vectord, result: Vectord) {
-    a.forEach( (v,i) => {
+    a.forEach((v, i) => {
         result[i] += a[i]
     })
 }
@@ -138,7 +137,7 @@ export function multAdd(A: Matrix, x: Vectord, b: Vectord, result: Vectord) {
  *     lu.setValue(0,1, 1.233)
  *     ...
  * }; lu.endConstruction()
- * 
+ *
  * const s1 = lu.evaluate([1,2,3,8,5,3,7,6,0,1])
  * const s2 = lu.evaluate([7,3,2,4,3,2,9,5,0,8])
  * ```
@@ -162,7 +161,7 @@ export class Lu {
         this.n_ = size
         this.a_ = undefined
         this.a_ = new Array(size).fill(undefined)
-        for (let i=0; i<size; ++i) {
+        for (let i = 0; i < size; ++i) {
             this.a_[i] = new Array(size).fill(0)
         }
     }
@@ -203,34 +202,36 @@ export class Lu {
      * Evaluate M.b and return the result as a new Vectord
      * @param b
      */
-     evaluate(b: Vectord): Vectord {
+    evaluate(b: Vectord): Vectord {
         if (this.isContructing) {
             throw new Error('Lu is in construction mode, cannot evaluate.')
         }
 
-        let ii=0,ip=0
-        let sum=0
+        let ii = 0,
+            ip = 0
+        let sum = 0
 
         const bb = [...b]
 
-        for (let i=1; i<=this.n_; i++) {
-            ip    = this.indx[i - 1]
-            sum   = bb[ip - 1]
+        for (let i = 1; i <= this.n_; i++) {
+            ip = this.indx[i - 1]
+            sum = bb[ip - 1]
             bb[ip - 1] = bb[i - 1]
             if (ii) {
-                for (let j=ii; j<=i-1; j++) {
+                for (let j = ii; j <= i - 1; j++) {
                     sum -= this.a_[i - 1][j - 1] * bb[j - 1]
                 }
-            }
-            else {
-                if (sum) ii = i
+            } else {
+                if (sum) {
+                    ii = i
+                }
             }
             bb[i - 1] = sum
         }
 
-        for (let i=this.n_; i>=1; i--) {
+        for (let i = this.n_; i >= 1; i--) {
             sum = bb[i - 1]
-            for (let j=i+1; j<=this.n_; j++) {
+            for (let j = i + 1; j <= this.n_; j++) {
                 sum -= this.a_[i - 1][j - 1] * bb[j - 1]
             }
             bb[i - 1] = sum / this.a_[i - 1][i - 1]
@@ -241,15 +242,15 @@ export class Lu {
 
     /**
      * Force the garbage collection ?
-     * Release the memory of the matrix and 
+     * Release the memory of the matrix and
      */
     release() {
         if (this.isContructing) {
             throw new Error('Lu is in construction mode. Cannot release.')
         }
 
-        this.n_   = 0
-        this.a_   = undefined
+        this.n_ = 0
+        this.a_ = undefined
         this.indx = undefined
         this.isContructing = false
     }
@@ -259,40 +260,47 @@ export class Lu {
      */
     private decompose() {
         let imax = 0
-        let big=0, dum=0, sum=0, temp=0
+        let big = 0,
+            dum = 0,
+            sum = 0,
+            temp = 0
         const vv = new Array(this.n_).fill(0)
         this.indx = new Array(this.n_).fill(0)
-        
-        for (let i=1; i<=this.n_; i++) {
+
+        for (let i = 1; i <= this.n_; i++) {
             big = 0
-            for (let j=1; j<=this.n_; j++) {
-                if ((temp=Math.abs(this.a_[i - 1][j - 1])) > big) big = temp
+            for (let j = 1; j <= this.n_; j++) {
+                if ((temp = Math.abs(this.a_[i - 1][j - 1])) > big) {
+                    big = temp
+                }
             }
-            if (big == 0) throw new Error("Singular matrix in routine lu.decompose")
-            vv[i - 1] = 1.0/big
+            if (big == 0) {
+                throw new Error('Singular matrix in routine lu.decompose')
+            }
+            vv[i - 1] = 1.0 / big
         }
-        for (let j=1; j<=this.n_; j++) {
-            for (let i=1; i<j; i++) {
+        for (let j = 1; j <= this.n_; j++) {
+            for (let i = 1; i < j; i++) {
                 sum = this.a_[i - 1][j - 1]
-                for (let k=1; k<i; k++) {
+                for (let k = 1; k < i; k++) {
                     sum -= this.a_[i - 1][k - 1] * this.a_[k - 1][j - 1]
                 }
                 this.a_[i - 1][j - 1] = sum
             }
             big = 0
-            for (let i=j; i<=this.n_; i++) {
+            for (let i = j; i <= this.n_; i++) {
                 sum = this.a_[i - 1][j - 1]
-                for (let k=1; k<j; k++) {
+                for (let k = 1; k < j; k++) {
                     sum -= this.a_[i - 1][k - 1] * this.a_[k - 1][j - 1]
                 }
                 this.a_[i - 1][j - 1] = sum
-                if ( (dum=vv[i - 1]*Math.abs(sum)) >= big) {
-                    big  = dum
+                if ((dum = vv[i - 1] * Math.abs(sum)) >= big) {
+                    big = dum
                     imax = i
                 }
             }
             if (j != imax) {
-                for (let k=1; k<=this.n_; k++) {
+                for (let k = 1; k <= this.n_; k++) {
                     dum = this.a_[imax - 1][k - 1]
                     this.a_[imax - 1][k - 1] = this.a_[j - 1][k - 1]
                     this.a_[j - 1][k - 1] = dum
@@ -304,8 +312,8 @@ export class Lu {
                 this.a_[j - 1][j - 1] = this.EPS
             }
             if (j != this.n_) {
-                dum = 1.0/(this.a_[j - 1][j - 1])
-                for (let i=j+1; i<=this.n_; i++) {
+                dum = 1.0 / this.a_[j - 1][j - 1]
+                for (let i = j + 1; i <= this.n_; i++) {
                     this.a_[i - 1][j - 1] *= dum
                 }
             }

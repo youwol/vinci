@@ -1,10 +1,10 @@
-import { Serie } from "@youwol/dataframe"
-import { Model } from "../bem/Model"
-import { Fault } from "../bem/Fault"
-import { add, create, scale } from "../math"
-import { Axis, Segment, BC } from "../bem/Segment"
-import { Vector, Vectord } from "../types"
-import { Dic, Tic } from "../bem"
+import { Serie } from '@youwol/dataframe'
+import { Model } from '../bem/Model'
+import { Fault } from '../bem/Fault'
+import { add, create, scale } from '../math'
+import { Axis, Segment, BC } from '../bem/Segment'
+import { Vector, Vectord } from '../types'
+import { Dic, Tic } from '../bem'
 
 /**
  * This class allows to build incrementally a fault composed of segments,
@@ -12,7 +12,7 @@ import { Dic, Tic } from "../bem"
  * @example
  * ```js
  * import { Model, FaultBuilder } from '@youwol/vinci'
- * 
+ *
  * const model   = new Model()
  * const builder = new FaultBuilder()
  * builder
@@ -25,17 +25,19 @@ import { Dic, Tic } from "../bem"
  * @category Utils
  */
 export class FaultBuilder {
-    private prev  : Vector = undefined
-    private fault_: Fault  = new Fault()
+    private prev: Vector = undefined
+    private fault_: Fault = new Fault()
 
-    get fault() {return this.fault_}
+    get fault() {
+        return this.fault_
+    }
 
     /**
      * Start a new fault construction
      */
     reset() {
         this.fault_ = new Fault()
-        this.prev   = undefined
+        this.prev = undefined
         return this
     }
 
@@ -64,7 +66,7 @@ export class FaultBuilder {
      */
     addPoint(p: Vector) {
         if (this.prev !== undefined) {
-            this.fault_.addElement( new Segment(this.prev, p) )
+            this.fault_.addElement(new Segment(this.prev, p))
             this.prev = [...p]
         }
         this.prev = [...p]
@@ -73,10 +75,11 @@ export class FaultBuilder {
 
     setPoints(p: Vectord | Serie) {
         if (Array.isArray(p)) {
-            Serie.create({array: p, itemSize: 2}).forEach( P => this.addPoint(P) )
-        }
-        else {
-            p.forEach( P => this.addPoint(P) )
+            Serie.create({ array: p, itemSize: 2 }).forEach((P) =>
+                this.addPoint(P),
+            )
+        } else {
+            p.forEach((P) => this.addPoint(P))
         }
         return this
     }
@@ -84,20 +87,20 @@ export class FaultBuilder {
     /**
      * Subdivide each segment in n sub-segments
      */
-    subdivide(n: number = 2) {
-        if (n<2) {
+    subdivide(n = 2) {
+        if (n < 2) {
             return this
         }
 
-        const fault    = new Fault()
+        const fault = new Fault()
         const segments = this.fault_.elements
-        segments.forEach( seg => {
+        segments.forEach((seg) => {
             let start = seg.begin
-            let end   = start
-            const step  = scale(create(start, seg.end), 1/n)
-            for (let i=0; i<n; ++i) {
+            let end = start
+            const step = scale(create(start, seg.end), 1 / n)
+            for (let i = 0; i < n; ++i) {
                 end = add(end, step)
-                fault.addElement( new Segment(start, end))
+                fault.addElement(new Segment(start, end))
                 start = end
             }
         })
@@ -127,28 +130,32 @@ export class FaultBuilder {
 
     setBurgersForAxis(axis: Axis, burgers: number | Serie | Vectord) {
         if (burgers instanceof Serie) {
-            if (burgers.itemSize !==1 ) {
-                throw new Error(`burgers itemSize (${burgers.itemSize}) should be 1`)
+            if (burgers.itemSize !== 1) {
+                throw new Error(
+                    `burgers itemSize (${burgers.itemSize}) should be 1`,
+                )
             }
             if (burgers.count !== this.fault_.elements.length) {
-                throw new Error(`burgers count (${burgers.count}) should be equals to the number of segments (${this.fault_.elements.length})`)
+                throw new Error(
+                    `burgers count (${burgers.count}) should be equals to the number of segments (${this.fault_.elements.length})`,
+                )
             }
-            this.fault_.elements.forEach( (e, i) => {
+            this.fault_.elements.forEach((e, i) => {
                 const b = burgers.array[i]
                 e.burger[axis] = b
             })
-        }
-        else if (Array.isArray(burgers) && burgers.length === this.fault_.elements.length) {
-            this.fault_.elements.forEach( (e, i) => {
+        } else if (
+            Array.isArray(burgers) &&
+            burgers.length === this.fault_.elements.length
+        ) {
+            this.fault_.elements.forEach((e, i) => {
                 e.burger[axis] = burgers[i]
             })
-        }
-        else if (typeof burgers === 'number') {
-            this.fault_.elements.forEach( (e, i) => {
+        } else if (typeof burgers === 'number') {
+            this.fault_.elements.forEach((e, i) => {
                 e.burger[axis] = burgers
             })
-        }
-        else {
+        } else {
             throw new Error("don't know how to set the burgers (bad argument)")
         }
         return this
