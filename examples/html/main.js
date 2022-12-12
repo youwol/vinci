@@ -139,8 +139,28 @@ function runModel(name, isDataframe = false) {
     const solution = new vinci.Solution(vmodel)
 
     const grid = generateGrid(vmodel)
-    grid.series['U'] = solution.displ(grid.series.positions)
+
+    // We need to have the displ in 3D since we are using the satellite direction in 3D
+    let displ = solution.displ(grid.series.positions, false)
+
+    grid.series['U'] = displ
     grid.series['S'] = solution.stress(grid.series.positions)
+
+    // Generate the insar according to the sattelite position and the fringe spacing
+    // ---------------------------
+    function generateInsar({ displ, LOS }) {
+        return displ.map((v) => v.reduce((accc, w, i) => accc + w * LOS[i]))
+    }
+    function generateFringes(serie, fringeSpacing) {
+        const frac = (val) => val - Math.floor(val)
+        const s = serie.map((v) =>
+            Math.abs(fringeSpacing * frac(v / fringeSpacing)),
+        )
+        s.dimension = 2 // now put this serie in dimension 2 in order to be visible by the manager
+        return s
+    }
+    const insar = generateInsar({ displ, LOS: ofringes.LOS })
+    grid.series['insar'] = generateFringes(insar, ofringes.spacing)
 
     return grid
 }

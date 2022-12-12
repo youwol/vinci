@@ -3,7 +3,7 @@ import { Material } from './Material'
 import { BC, Segment } from './Segment'
 import { BBox } from '../utils/BBox'
 import { Tic, Dic } from './inequalities'
-import { Serie } from '@youwol/dataframe'
+import { createEmptySerie, Serie } from '@youwol/dataframe'
 import { FaultBuilder } from '../utils/FaultBuilder'
 
 /**
@@ -176,12 +176,24 @@ export class Fault {
         }
     }
 
-    get burgers() {
+    get burgers(): Vectord {
         const r: Vectord = []
         this.elements.forEach((e) => {
             r.push(...e.burger)
         })
         return r
+    }
+
+    get burgersAsSerie(): Serie {
+        const u = createEmptySerie({
+            Type: Float32Array,
+            count: this.elements.length,
+            itemSize: 2,
+            dimension: 2,
+            shared: false,
+        })
+        this.elements.forEach((e, i) => u.setItemAt(i, e.burger))
+        return u
     }
 
     /**

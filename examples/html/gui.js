@@ -1,6 +1,6 @@
 GUI = lil.GUI
 
-console.log('ADD A INSAR FRINGES WITH STATTELITE ORIENTATION !!!')
+// console.error('ADD A INSAR FRINGES WITH STATTELITE ORIENTATION !!!')
 
 gridSampling = 50
 
@@ -80,6 +80,14 @@ const streamLines = {
     maxTimePerIteration: 100,
     translate: [0, 0, 0.1],
     width: 0.001,
+}
+
+const ofringes = {
+    show: false,
+    azym: 0,
+    decli: 90,
+    spacing: 0.01,
+    LOS: [0, 0, 1],
 }
 
 // const vectors = {
@@ -532,28 +540,39 @@ function connectGui() {
 
     // ======================================
 
-    const ofringes = {
-        show: false,
-        azym: 0,
-        decli: 90,
-        spacing: 0.01,
-    }
-
     const fringes = gui.addFolder('Insar')
-    fringes.add(ofringes, 'show').name('Show')
+    // fringes.add( ofringes, 'show').name('Show')
     fringes
         .add(ofringes, 'azym', 0, 180, 1)
         .name('Sat azymuth')
-        .onChange((value) => {})
+        .onChange((value) => {
+            const theta = (ofringes.decli * Math.PI) / 180
+            const phi = (ofringes.azym * Math.PI) / 180
+            const x = Math.sin(theta) * Math.cos(phi)
+            const y = Math.sin(theta) * Math.sin(phi)
+            const z = Math.cos(theta)
+            ofringes.LOS = [x, y, z]
+            repaint()
+        })
         .listen()
     fringes
         .add(ofringes, 'decli', 0, 90, 1)
         .name('Sat declination')
-        .onChange((value) => {})
+        .onChange((value) => {
+            const theta = (ofringes.decli * Math.PI) / 180
+            const phi = (ofringes.azym * Math.PI) / 180
+            const x = Math.sin(theta) * Math.cos(phi)
+            const y = Math.sin(theta) * Math.sin(phi)
+            const z = Math.cos(theta)
+            ofringes.LOS = [x, y, z]
+            repaint()
+        })
         .listen()
     fringes
-        .add(ofringes, 'spacing', 0.0001, 0.1, 0.001)
+        .add(ofringes, 'spacing', 0.0001, 1, 0.001)
         .name('Fringes spacing')
-        .onChange((value) => {})
+        .onChange((value) => {
+            repaint()
+        })
         .listen()
 }

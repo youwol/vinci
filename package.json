@@ -24,7 +24,7 @@
         "@typescript-eslint/eslint-plugin": "^5.33.1",
         "@typescript-eslint/parser": "^5.33.1",
         "@youwol/dataframe": "^0.0.37",
-        "@youwol/eslint-config": "^0.0.2",
+        "@youwol/eslint-config": "^0.0.4",
         "@youwol/geometry": "^0.0.21",
         "@youwol/io": "^0.0.25-wip",
         "@youwol/kepler": "^0.0.13",
@@ -75,6 +75,7 @@
         ]
     },
     "dependencies": {
+        "@youwol/geophysics": "^0.0.9",
         "chroma-js": "^2.4.2"
     }
 }

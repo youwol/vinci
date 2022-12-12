@@ -1,6 +1,6 @@
 import { Model } from './Model'
 import { Stress, Displ } from '../types'
-import { Serie, createFrom } from '@youwol/dataframe'
+import { Serie, createFrom, createEmptySerie } from '@youwol/dataframe'
 
 /**
  * @category Core
@@ -11,42 +11,26 @@ export class Solution {
     // Todo: (local = true, atSegment = true)
     /**
      * Get the computed and imposed displacement on faults
-     * @note The return displacement is an array of [ux,uy, ux,uy, ...], each
+     * @note The return displacement as a Serie of [ux,uy, ux,uy, ...], each
      * entry being a fault
      */
     burgers() {
-        const sol: Array<Array<number>> = []
-        this.model.faults.forEach((fault) => {
-            const u = []
-            fault.elements.forEach((e) => u.push(e.burger[0], e.burger[1]))
-            sol.push(u)
-        })
-
-        return sol
+        return this.model.faults.map((fault) => fault.burgersAsSerie)
     }
 
     /**
-     * Get the displacement at pts location.
-     * @note The return displacement is in the form [ux,uy, ux,uy, ...]
+     * Get the displacement in 2D or in 3D (the third dimension being 0) at pts location
+     * @note The return displacement is in the form [ux,uy, ux,uy, ...] or [ux,uy,uz, ux,uy,uz, ...]
      */
-    displ(pts: Serie): Serie {
-        const isize = 2 //pts.itemSize
-        if (isize < 2) {
-            throw new Error('itemSize for points should be at least 2')
-        }
+    displ(pts: Serie, in2D = true): Serie {
+        const isize = in2D ? 2 : 3
 
-        // const sol = Serie.create({
-        //     array: createFrom({array: pts.array, count: pts.count, itemSize: 2}),
-        //     itemSize: 2
-        // })
-        const sol = Serie.create({
-            array: createFrom({
-                array: pts.array,
-                count: pts.count,
-                itemSize: isize,
-            }),
+        const sol = createEmptySerie({
+            Type: Float32Array,
+            count: pts.count,
             itemSize: isize,
-            dimension: 2,
+            dimension: isize,
+            shared: false,
         })
 
         let j = 0
@@ -61,7 +45,7 @@ export class Solution {
             })
             sol.array[j++] = u[0]
             sol.array[j++] = u[1]
-            // if (isize > 2) sol.array[j++] = 0
+            if (isize > 2) sol.array[j++] = 0
         })
 
         return sol
@@ -76,15 +60,14 @@ export class Solution {
             throw new Error('itemSize for points should be at least 2')
         }
 
-        const sol = Serie.create({
-            array: createFrom({
-                array: pts.array,
-                count: pts.count,
-                itemSize: 3,
-            }),
+        const sol = createEmptySerie({
+            Type: Float32Array,
+            count: pts.count,
             itemSize: 3,
             dimension: 2,
+            shared: false,
         })
+
         let j = 0
         pts.forEach((p) => {
             const s: Stress = [0, 0, 0]
