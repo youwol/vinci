@@ -1047,15 +1047,20 @@
   resolved "https://registry.yarnpkg.com/@youwol/dataframe/-/dataframe-0.0.37.tgz#4bf388c231d335beb2d2628684be10283110d5f7"
   integrity sha512-FrjK6zeAyN+JsXsCv3dfpDciJw4GHaOtYoFyoQUOZd8oV2GASZ5x3N2oi2l7O0lharXX+dcaMina97yOaEDXjA==
 
-"@youwol/eslint-config@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@youwol/eslint-config/-/eslint-config-0.0.2.tgz#7f09617f60ba61e71fb43e964f0bf5db8c107807"
-  integrity sha512-4K/euIHPo2qATnO7WrAEuE7Y+9xgnzXRFI8fclS0qyTN7nH5Th+cC1kOMt2VFwNHCiHt3YkGjFncFHbcju7l7A==
+"@youwol/eslint-config@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@youwol/eslint-config/-/eslint-config-0.0.4.tgz#f5ca190a60173d67dd01306587c0ac0dc1d184e0"
+  integrity sha512-TdsslNgIeh/zOw/h20FNK7I8TW67YrIc0doNzodVyM0agUsHQbxvUKZt590DqVJ03UTDsGR3xSEu3ivkDmZzEw==
 
 "@youwol/geometry@^0.0.21":
   version "0.0.21"
   resolved "https://registry.yarnpkg.com/@youwol/geometry/-/geometry-0.0.21.tgz#820f76a69e6d1cb6b9392520aba64b326e042047"
   integrity sha512-SZI1z9iOTmqaG4HPUueC+Vh4/LDpI4AKUOy1l3jSa64MOBUOi3get64hx3nBrQL6D1vQcy48tSmpbqJ8J6cUVg==
+
+"@youwol/geophysics@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@youwol/geophysics/-/geophysics-0.0.9.tgz#e319b068179b685d76592aa81cb88e205acd735a"
+  integrity sha512-scnjLuD1pnugoYuVyaBLoXmVitdQ/kF+N4JtUvBaE15cuuEtCEMg87TgFlULblsR1t5Xf6bOpjK9WsEiU81qfw==
 
 "@youwol/io@0.0.20":
   version "0.0.20"

@@ -53,9 +53,11 @@ export class Coulomb extends Tic {
         private friction: number,
         private cohesion: number,
         private lambda = 0,
+        private s = 'coucou',
     ) {
         super()
     }
+
     do(tract: Traction): Traction {
         if (tract[1] > 0) {
             return tract // opening mode
