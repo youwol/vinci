@@ -53,28 +53,30 @@
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="burgers" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>burgers</span><a href="#burgers" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="burgers.burgers-1">burgers<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span><a href="#burgers.burgers-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="burgers.burgers-1">burgers<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><a href="#burgers.burgers-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Get the computed and imposed displacement on faults</p>
 
-<h3>Note</h3><p>The return displacement is an array of [ux,uy, ux,uy, ...], each
+<h3>Note</h3><p>The return displacement as a Serie of [ux,uy, ux,uy, ...], each
 entry being a fault</p>
 </div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></h4></li></ul></section>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h4></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="displ" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>displ</span><a href="#displ" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="displ.displ-1">displ<span class="tsd-signature-symbol">(</span>pts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span><a href="#displ.displ-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="displ.displ-1">displ<span class="tsd-signature-symbol">(</span>pts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span>, in2D<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span><a href="#displ.displ-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Get the displacement at pts location.</p>
+<div class="tsd-comment tsd-typography"><p>Get the displacement in 2D or in 3D (the third dimension being 0) at pts location</p>
 
-<h3>Note</h3><p>The return displacement is in the form [ux,uy, ux,uy, ...]</p>
+<h3>Note</h3><p>The return displacement is in the form [ux,uy, ux,uy, ...] or [ux,uy,uz, ux,uy,uz, ...]</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>pts: <span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul></div>
+<h5>pts: <span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span></h5></li>
+<li>
+<h5>in2D: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Serie</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IArray</span><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="stress" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>stress</span><a href="#stress" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>

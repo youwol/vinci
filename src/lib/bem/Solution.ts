@@ -1,6 +1,6 @@
 import { Model } from './Model'
 import { Stress, Displ } from '../types'
-import { Serie, createFrom, createEmptySerie } from '@youwol/dataframe'
+import { Serie, createEmptySerie } from '@youwol/dataframe'
 
 /**
  * @category Core
@@ -45,7 +45,9 @@ export class Solution {
             })
             sol.array[j++] = u[0]
             sol.array[j++] = u[1]
-            if (isize > 2) sol.array[j++] = 0
+            if (isize > 2) {
+                sol.array[j++] = 0
+            }
         })
 
         return sol
