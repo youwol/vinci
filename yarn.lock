@@ -1057,6 +1057,11 @@
   resolved "https://registry.yarnpkg.com/@youwol/geometry/-/geometry-0.0.21.tgz#820f76a69e6d1cb6b9392520aba64b326e042047"
   integrity sha512-SZI1z9iOTmqaG4HPUueC+Vh4/LDpI4AKUOy1l3jSa64MOBUOi3get64hx3nBrQL6D1vQcy48tSmpbqJ8J6cUVg==
 
+"@youwol/geophysics@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@youwol/geophysics/-/geophysics-0.0.9.tgz#e319b068179b685d76592aa81cb88e205acd735a"
+  integrity sha512-scnjLuD1pnugoYuVyaBLoXmVitdQ/kF+N4JtUvBaE15cuuEtCEMg87TgFlULblsR1t5Xf6bOpjK9WsEiU81qfw==
+
 "@youwol/io@0.0.20":
   version "0.0.20"
   resolved "https://registry.yarnpkg.com/@youwol/io/-/io-0.0.20.tgz#1101293674f39f3e2a9fe28124c9f0856442d8f8"
