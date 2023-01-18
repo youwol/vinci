@@ -1,3 +1,5 @@
+/* eslint no-undef: off -- comment */
+/* eslint no-unused-vars: off -- comment */
 function doLines(dfs, lineInfo) {
     dfs.forEach((df) => {
         lineDataframe.push(df)

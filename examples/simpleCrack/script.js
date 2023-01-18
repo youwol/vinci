@@ -6,6 +6,7 @@ const generateRectangle = require('../generateGrid')
 
 const path = '/Users/fmaerten/data/vinci/crack/'
 
+/* eslint no-unused-vars: off -- we need it */
 function parallel() {
     const model = new vinci.Model()
     const builder = new vinci.FaultBuilder()

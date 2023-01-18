@@ -92,7 +92,7 @@ export class BBox {
      * @param param Either a BBox or a Vector
      * @param tol The tolerence for the test
      */
-    contains(param: any, tol = 0): boolean {
+    contains(param: object, tol = 0): boolean {
         if (param instanceof BBox) {
             return (
                 this.contains(param.min, tol) === true &&
@@ -114,7 +114,7 @@ export class BBox {
      * @deprecated
      * @see contains
      */
-    inside(p: any, tol = 0): boolean {
+    inside(p: object, tol = 0): boolean {
         return this.contains(p, tol)
     }
 

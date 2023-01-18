@@ -12,7 +12,8 @@
         "build:prod": "webpack --mode production",
         "test": "jest -c ./jest.config.js --rootDir .",
         "test-coverage": "jest -c ./jest.config.js --rootDir . --collect-coverage --collectCoverageFrom=./src/lib/**/*.ts ",
-        "doc": "rm -fr dist/docs && typedoc src/ src/examples --exclude src/lib --exclude src/tests --media ./media --excludePrivate --disableSources --out dist/docs --includeVersion --hideGenerator",
+        "doc_": "typedoc src --exclude src/tests --excludePrivate --disableSources --out dist/docs --includeVersion --hideGenerator",
+        "doc": "typedoc --options typedoc.json",
         "publish-npm-public": "yarn build:prod && yarn test-coverage && yarn publish --access public",
         "__serve": "http-server ../../../.. -p 92 -o /devs/workspace/packages/vinci/examples/html/index.html",
         "serve": "http-server . -p 92 -o /examples/html/index.html"
@@ -24,7 +25,7 @@
         "@typescript-eslint/eslint-plugin": "^5.33.1",
         "@typescript-eslint/parser": "^5.33.1",
         "@youwol/dataframe": "^0.0.37",
-        "@youwol/eslint-config": "^0.0.2",
+        "@youwol/eslint-config": "^0.0.4",
         "@youwol/geometry": "^0.0.21",
         "@youwol/io": "^0.0.25-wip",
         "@youwol/kepler": "^0.0.13",

@@ -1,5 +1,4 @@
 const vinci = require('../../dist/@youwol/vinci')
-const io = require('@youwol/io')
 const df = require('@youwol/dataframe')
 const fs = require('fs')
 
@@ -22,7 +21,7 @@ r.forEach((rr) => {
     i += 2
 })
 const position = df.Serie.create({ array: pos, itemSize: 3 })
-const indices = df.Serie.create({ array: ind, itemSize: 2 })
+// const indices = df.Serie.create({ array: ind, itemSize: 2 })
 
 let out = 'GOCAD Polyline 1.0\nHEADER{\nname: lines\n}\n'
 for (let i = 0; i < position.count; i += 2) {
@@ -39,5 +38,5 @@ fs.writeFileSync(
     '/Users/fmaerten/data/vinci/pl/' + name + '.pl',
     out,
     'utf8',
-    (err) => {},
+    () => {},
 )

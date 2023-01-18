@@ -152,7 +152,7 @@ export class FaultBuilder {
                 e.burger[axis] = burgers[i]
             })
         } else if (typeof burgers === 'number') {
-            this.fault_.elements.forEach((e, i) => {
+            this.fault_.elements.forEach((e) => {
                 e.burger[axis] = burgers
             })
         } else {

@@ -1,1 +1,7 @@
 /dist/docs
+/dist/lib
+/dist/@youwol
+/dist/examples
+/dist/tests
+/dist/index.d.ts
+/src/examples

@@ -4,10 +4,10 @@ import { Vector, Displ, Traction } from '../types'
 
 /**
  * Interface for inequality constraint (in traction or displacement)
- * @see [[Tic]]
- * @see [[Dic]]
- * @see [[UserTic]]
- * @see [[UserDic]]
+ * @see {@link Tic}
+ * @see {@link Dic}
+ * @see {@link UserTic}
+ * @see {@link UserDic}
  * @category Inequality
  */
 export interface Inequality {
@@ -16,8 +16,8 @@ export interface Inequality {
 
 /**
  * Callback for inequality constraint in traction or displacement
- * @see [[UserTic]]
- * @see [[UserDic]]
+ * @see {@link UserTic}
+ * @see {@link UserDic}
  * @category Inequality
  */
 export type InequalityCB = (vector: Vector) => Vector
@@ -75,6 +75,7 @@ export class Coulomb extends Tic {
 
 // -----------------------------------------------
 
+/* eslint unused-imports/no-unused-vars: off -- need for doc*/
 /**
  * Base class for all inequality constraint in displacement
  * @category Inequality

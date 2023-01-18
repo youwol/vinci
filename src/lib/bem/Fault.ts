@@ -132,7 +132,7 @@ export class Fault {
     }
 
     /**
-     * Set the burger's vectors for all segments. Possible arguments are a [[Serie]] of
+     * Set the burger's vectors for all segments. Possible arguments are a Serie of
      * size the number of segments times 2, an array of size the number of segments times 2, or
      * an array of size 2:
      * ```js
@@ -142,34 +142,34 @@ export class Fault {
      * f.burgers = [0,1] // set for all segments
      * ```
      */
-    set burgers(burgers: Serie | Vectord) {
-        if (burgers instanceof Serie) {
-            if (burgers.itemSize < 2) {
+    set burgers(theBurgers: Serie | Vectord) {
+        if (theBurgers instanceof Serie) {
+            if (theBurgers.itemSize < 2) {
                 throw new Error(
-                    `burgers itemSize (${burgers.itemSize}) should be >= 2`,
+                    `burgers itemSize (${theBurgers.itemSize}) should be >= 2`,
                 )
             }
-            if (burgers.count !== this.elements.length) {
+            if (theBurgers.count !== this.elements.length) {
                 throw new Error(
-                    `burgers count (${burgers.count}) should be equals to the number of segments (${this.elements.length})`,
+                    `burgers count (${theBurgers.count}) should be equals to the number of segments (${this.elements.length})`,
                 )
             }
             this.elements.forEach((e, i) => {
-                const b = burgers.itemAt(i)
+                const b = theBurgers.itemAt(i)
                 e.burger = [b[0], b[1]]
             })
         } else if (
-            Array.isArray(burgers) &&
-            burgers.length === this.elements.length * 2
+            Array.isArray(theBurgers) &&
+            theBurgers.length === this.elements.length * 2
         ) {
             this.elements.forEach((e, i) => {
-                //const b = burgers.itemAt(i)
-                e.burger = [burgers[2 * i], burgers[2 * i + 1]]
+                //const b = theBurgers.itemAt(i)
+                e.burger = [theBurgers[2 * i], theBurgers[2 * i + 1]]
             })
-        } else if (Array.isArray(burgers) && burgers.length === 2) {
-            this.elements.forEach((e, i) => {
-                //const b = burgers.itemAt(i)
-                e.burger = [burgers[0], burgers[1]]
+        } else if (Array.isArray(theBurgers) && theBurgers.length === 2) {
+            this.elements.forEach((e) => {
+                //const b = theBurgers.itemAt(i)
+                e.burger = [theBurgers[0], theBurgers[1]]
             })
         } else {
             throw new Error("don't know how to set the burgers (bad argument)")

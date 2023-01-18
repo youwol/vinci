@@ -1,4 +1,4 @@
-import { Point, Stress } from '../types'
+import { Stress } from '../types'
 import { BaseRemoteStress } from './BaseRemoteStress'
 
 /**
@@ -45,7 +45,7 @@ export class RotationalStress implements BaseRemoteStress {
         return this.S2_
     }
 
-    at(p: Point): Stress {
+    at(): Stress {
         return [
             this.S1_ * this.c ** 2 + this.S2_ * this.s ** 2,
             (this.S2_ - this.S1_) * this.c * this.s,

@@ -1,3 +1,4 @@
+/* eslint no-undef: off -- no our code */
 chroma = globalThis['chroma']
 
 // See https://observablehq.com/@d3/color-schemes

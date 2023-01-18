@@ -1,5 +1,7 @@
 import { Fault, Model, RemoteStress, Segment, Seidel } from '..'
 
+/* eslint jest/expect-expect: off -- work in progress */
+
 test('construction', () => {
     const model = new Model()
     const fault = new Fault()

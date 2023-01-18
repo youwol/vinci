@@ -1,6 +1,5 @@
 const vinci = require('../../dist/@youwol/vinci')
 const io = require('@youwol/io')
-const math = require('@youwol/math')
 const dataframe = require('@youwol/dataframe')
 const fs = require('fs')
 const generateRectangle = require('../generateGrid')
@@ -78,13 +77,13 @@ fs.writeFileSync(
     '/Users/fmaerten/data/vinci/grid/remote.ts',
     io.encodeGocadTS(grid),
     'utf8',
-    (err) => {},
+    () => {},
 )
 fs.writeFileSync(
     '/Users/fmaerten/data/vinci/pl/remote.pl',
     io.encodeGocadPL(faults),
     'utf8',
-    (err) => {},
+    () => {},
 )
 
 /*

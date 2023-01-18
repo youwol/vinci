@@ -1,0 +1,10 @@
+// typedoc.json
+{
+    "$schema": "https://typedoc.org/schema.json",
+    "entryPoints": ["./src/lib/index.ts", "./src/examples/index.ts"],
+    "out": "dist/docs",
+    "excludePrivate": true,
+    "disableSources": true,
+    "includeVersion": true,
+    "hideGenerator": true
+}

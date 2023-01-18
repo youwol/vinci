@@ -14,13 +14,16 @@ export type StopCallback = () => boolean
  * This function is invoked when necessary to provide extra information
  * when the solver is running
  */
-export type MessageCallback = (s: string) => any
+export type MessageCallback = (s: string) => object
 
 /**
  * This function is called at each iteration, passing the current convergence
  * and iteration number
  */
-export type IterationCallback = (convergence: number, iteration: number) => any
+export type IterationCallback = (
+    convergence: number,
+    iteration: number,
+) => object
 
 /**
  * Interface for a solver

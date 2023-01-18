@@ -23,8 +23,9 @@ export function dxfDecoder(buffer: string): DxfReturnType {
     const segments: DxfReturnType = []
 
     let i = 0
+    const condition = true
     const nextLine = () => {
-        while (true) {
+        while (condition) {
             if (i >= lines.length) {
                 return undefined
             }
@@ -38,7 +39,7 @@ export function dxfDecoder(buffer: string): DxfReturnType {
         }
     }
 
-    while (true) {
+    while (condition) {
         const r = nextLine()
         if (r === undefined) {
             break
@@ -60,9 +61,9 @@ export function dxfDecoder(buffer: string): DxfReturnType {
     return segments
 }
 
-const trimAll = (s: string) =>
-    s
-        .replace(/\s+/g, ' ')
-        .replace(/^\s+|\s+$/, '')
-        .replace('\t', ' ')
-        .trimEnd()
+// const trimAll = (s: string) =>
+//     s
+//         .replace(/\s+/g, ' ')
+//         .replace(/^\s+|\s+$/, '')
+//         .replace('\t', ' ')
+//         .trimEnd()

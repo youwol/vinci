@@ -199,9 +199,9 @@ export class Segment {
         const displ = this.displCoeff(p)
         const sin = this.sin
         const cos = this.cos
-        const cos2 = cos ** 2
-        const sin2 = sin ** 2
-        const sincos = sin * cos
+        // const cos2 = cos ** 2
+        // const sin2 = sin ** 2
+        // const sincos = sin * cos
 
         return [
             [

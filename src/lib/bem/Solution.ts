@@ -50,7 +50,7 @@ export class Solution {
         })
 
         let j = 0
-        pts.forEach((p, i) => {
+        pts.forEach((p) => {
             const u: Displ = [0, 0]
             this.model.faults.forEach((fault) => {
                 fault.elements.forEach((e) => {
