@@ -9,15 +9,13 @@ const path = '/Users/fmaerten/data/vinci/crack/'
 /* eslint no-unused-vars: off -- we need it */
 function parallel() {
     const model = new vinci.Model()
-    const builder = new vinci.FaultBuilder()
+    const builder = new vinci.FaultBuilder(model)
 
     builder
         .setPoints(new Array(20).fill(0).map((v, i) => i))
         .setBurger([1, 0])
         .setBcTypes(['b', 'b'])
-    model.addFault(builder.fault)
-
-    builder
+        .addToModel()
         .reset()
         .setPoints(
             new Array(20)
@@ -26,41 +24,44 @@ function parallel() {
         )
         .setBcTypes(['b', 'b'])
         .setBurger([1, 0])
-    model.addFault(builder.fault)
+        .addToModel()
 
     return model
 }
 
 function enEchelon() {
     const model = new vinci.Model()
-    const builder = new vinci.FaultBuilder()
+    const builder = new vinci.FaultBuilder(model)
 
     builder
         .setPoints([-1, -1, 1, 1, 2, 1])
         .subdivide(30)
         .setBurger([0, 1])
         .setBcType('bb')
-        .addTo(model)
+        .addToModel()
         .reset()
         .setPoints([1, 0.5, 2, 0.5, 4, 2.5])
         .subdivide(30)
         .setBurger([0, 1])
         .setBcType('bb')
-        .addTo(model)
+        .addToModel()
 
     return model
 }
 
 function simpleCrack() {
     const model = new vinci.Model()
-    const builder = new vinci.FaultBuilder()
+    const builder = new vinci.FaultBuilder(model)
 
     const n = 40
     const x = new Array(n).fill(0).map((v, i) => (i % 2 === 0 ? i / n / 2 : 0))
     // // const x = [0,0, 1,0]
 
-    builder.setPoints(x).setBcTypes(['b', 'b']).setBurger([1, 0])
-    model.addFault(builder.fault)
+    builder
+        .setPoints(x)
+        .setBcTypes(['b', 'b'])
+        .setBurger([1, 0])
+        .addToModel(model)
 
     return model
 }

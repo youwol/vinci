@@ -22,14 +22,14 @@ function buildFault(points) {
 }
 
 function addFaultToModel(fault, model, bcType) {
-    const builder = new vinci.FaultBuilder()
+    const builder = new vinci.FaultBuilder(model)
     fault.series.positions.forEach((p) => builder.addPoint(p))
     faults.push(fault)
     builder
         .setBcType(bcType)
         // .setBurger([0,0])
         // .addTic( new vinci.UserTic( v => [v[0], v[1]<0 ? 0 : v[1]] ) )
-        .addTo(model)
+        .addToModel()
 }
 
 // addFaultToModel(buildFault(new Array(15).fill(0).map( (v,i) => i%3===0?i/3:0)), model, 'tt')

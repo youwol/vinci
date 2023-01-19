@@ -16,11 +16,15 @@ export class Fault {
     private tics_: Tic[] = []
     private dics_: Dic[] = []
 
-    constructor(points: Vectord | Serie = undefined) {
-        if (points) {
-            const b = new FaultBuilder()
-            b.setPoints(points)
-            b.fault.elements.forEach((seg) => this.addElement(seg))
+    constructor(points: Vectord | Serie | FaultBuilder = undefined) {
+        if (points !== undefined) {
+            if (points instanceof FaultBuilder) {
+                points.fault.elements.forEach((seg) => this.addElement(seg))
+            } else {
+                const b = new FaultBuilder()
+                b.setPoints(points)
+                b.fault.elements.forEach((seg) => this.addElement(seg))
+            }
         }
     }
 

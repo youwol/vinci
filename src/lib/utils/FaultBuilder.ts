@@ -14,19 +14,40 @@ import { Dic, Tic } from '../bem'
  * import { Model, FaultBuilder } from '@youwol/vinci'
  *
  * const model   = new Model()
- * const builder = new FaultBuilder()
- * builder
+ *
+ * const builder = FaultBuilder.create(model)
  *    .addPoint([0,0])
  *    .addPoint([1,1])
  *    .subdivide(10)
  *    .setBcType('tt')
- *    .addTo(model)
+ *    .addToModel() // put first fault into the model
+ *    .addPoint([2,0])
+ *    .addPoint([3,1])
+ *    .subdivide(20)
+ *    .setBcType('tb')
+ *    .addToModel() // put second fault into the model (do not forget this call at the end)
+ * ```
+ * @example
+ * ```js
+ * import { Model, FaultBuilder } from '@youwol/vinci'
+ *
+ * const builder = FaultBuilder.create()
+ *    .addPoint([0,0])
+ *    .addPoint([1,1])
+ *    .subdivide(10)
+ *    .setBcType('tt')
+ *    // Here, do not call addToModel() as the model is undefined!
+ *
+ * // Instead, construct a fault using the builder
+ * const fault = new Fault(builder)
  * ```
  * @category Utils
  */
 export class FaultBuilder {
     private prev: Vector = undefined
     private fault_: Fault = new Fault()
+
+    constructor(private model: Model = undefined) {}
 
     get fault() {
         return this.fault_
@@ -42,10 +63,14 @@ export class FaultBuilder {
     }
 
     /**
-     * Put the current built fault into the provided model
+     * Add the current built fault into the provided model if any
      */
-    addTo(model: Model) {
-        model.addFault(this.fault_)
+    addToModel() {
+        if (this.model === undefined) {
+            console.warn('Model is not set while calling done()')
+        } else {
+            this.model.addFault(this.fault_)
+        }
         return this
     }
 

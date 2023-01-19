@@ -7,13 +7,13 @@ const model = new vinci.Model()
 // fault.burgers = [0, 1]
 // model.addFault(fault)
 
-const builder = new vinci.FaultBuilder()
+const builder = new vinci.FaultBuilder(model)
 builder
     .addPoint([0, 0])
     .addPoint([1, 1])
     //  .subdivide(2)
     .setBcType('tt')
-    .addTo(model)
+    .addToModel()
 
 const fault = builder.fault
 fault.elements.forEach((s) => {
