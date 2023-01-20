@@ -38,5 +38,5 @@ fs.writeFileSync(
     '/Users/fmaerten/data/vinci/pl/' + name + '.pl',
     out,
     'utf8',
-    () => {},
+    (_err) => {},
 )

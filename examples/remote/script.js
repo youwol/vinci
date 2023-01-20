@@ -77,13 +77,13 @@ fs.writeFileSync(
     '/Users/fmaerten/data/vinci/grid/remote.ts',
     io.encodeGocadTS(grid),
     'utf8',
-    () => {},
+    (_err) => {},
 )
 fs.writeFileSync(
     '/Users/fmaerten/data/vinci/pl/remote.pl',
     io.encodeGocadPL(faults),
     'utf8',
-    () => {},
+    (_err) => {},
 )
 
 /*

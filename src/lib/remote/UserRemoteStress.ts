@@ -1,7 +1,7 @@
 import { Point, Stress } from '../types'
 import { BaseRemoteStress, FunctionalRemote } from './BaseRemoteStress'
 
-const DefaultFct = (/*p: Point*/): Stress => [0, 0, 0]
+const DefaultFct = (_p: Point): Stress => [0, 0, 0]
 
 /**
  * Define a user remote
