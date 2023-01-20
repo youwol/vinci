@@ -1,6 +1,5 @@
 const vinci = require('../../dist/@youwol/vinci')
 const io = require('@youwol/io')
-const math = require('@youwol/math')
 const dataframe = require('@youwol/dataframe')
 const fs = require('fs')
 const generateRectangle = require('../generateGrid')
@@ -23,14 +22,14 @@ function buildFault(points) {
 }
 
 function addFaultToModel(fault, model, bcType) {
-    const builder = new vinci.FaultBuilder()
+    const builder = new vinci.FaultBuilder(model)
     fault.series.positions.forEach((p) => builder.addPoint(p))
     faults.push(fault)
     builder
         .setBcType(bcType)
         // .setBurger([0,0])
         // .addTic( new vinci.UserTic( v => [v[0], v[1]<0 ? 0 : v[1]] ) )
-        .addTo(model)
+        .addToModel()
 }
 
 // addFaultToModel(buildFault(new Array(15).fill(0).map( (v,i) => i%3===0?i/3:0)), model, 'tt')
@@ -78,13 +77,13 @@ fs.writeFileSync(
     '/Users/fmaerten/data/vinci/grid/remote.ts',
     io.encodeGocadTS(grid),
     'utf8',
-    (err) => {},
+    (_err) => {},
 )
 fs.writeFileSync(
     '/Users/fmaerten/data/vinci/pl/remote.pl',
     io.encodeGocadPL(faults),
     'utf8',
-    (err) => {},
+    (_err) => {},
 )
 
 /*

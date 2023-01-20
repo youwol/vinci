@@ -2,8 +2,8 @@ const geom = require('@youwol/geometry')
 const df = require('@youwol/dataframe')
 
 function generateRectangle({ a, b, na, nb, center = [0, 0, 0], badFct }) {
-    const add = (x, y) =>
-        nodes.push(x + center[0] - a / 2, y + center[1] - b / 2, center[2])
+    // const add = (x, y) =>
+    //     nodes.push(x + center[0] - a / 2, y + center[1] - b / 2, center[2])
     const nodes = []
     const aa = 1 / (na - 1)
     const bb = 1 / (nb - 1)

@@ -12,7 +12,7 @@
  *
  * const model = new vinci.Model()
  *
- * const builder = new vinci.FaultBuilder()
+ * const builder = new vinci.FaultBuilder(model)
  *
  * builder
  *      // First crack
@@ -20,14 +20,14 @@
  *      .subdivide(30)
  *      .setBurger([0,1])
  *      .setBcType(vinci.BC.bb)
- *      .addTo(model)
+ *      .addToModel()
  *      // Second crack
  *      .reset()
  *      .setPoints([1,0.5, 2,0.5, 4, 2.5])
  *      .subdivide(30)
  *      .setBurger([0,1])
  *      .setBcType(vinci.BC.bb)
- *      .addTo(model)
+ *      .addToModel()
  *
  * const bounds = model.bounds
  * const grid = geom.generateRectangle({

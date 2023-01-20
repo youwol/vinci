@@ -6,7 +6,7 @@ import { BaseRemoteStress } from './BaseRemoteStress'
  */
 export class RemoteStress implements BaseRemoteStress {
     constructor(private stress: Stress) {}
-    at(p: Point): Stress {
+    at(_p: Point): Stress {
         return [...this.stress] // copy
     }
 }

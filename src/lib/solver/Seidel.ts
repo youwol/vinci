@@ -8,6 +8,9 @@ import { Model } from '../bem/Model'
 import { applyRemotes } from '../functions'
 import { System } from './System'
 
+/* eslint unused-imports/no-unused-vars: off -- for doc */
+/* eslint @typescript-eslint/no-empty-function: off -- for doc */
+
 /**
  * @example
  * ```js

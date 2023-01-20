@@ -92,7 +92,7 @@ export class BBox {
      * @param param Either a BBox or a Vector
      * @param tol The tolerence for the test
      */
-    contains(param: any, tol = 0): boolean {
+    contains(param: BBox | Vector, tol = 0): boolean {
         if (param instanceof BBox) {
             return (
                 this.contains(param.min, tol) === true &&
@@ -100,7 +100,7 @@ export class BBox {
             )
         }
 
-        const p = param.data // a Vector
+        const p = param // a Vector
         for (let i = 0; i < 2; ++i) {
             if (p[i] < this.min_[i] - tol || p[i] > this.max_[i] + tol) {
                 return false
@@ -114,7 +114,7 @@ export class BBox {
      * @deprecated
      * @see contains
      */
-    inside(p: any, tol = 0): boolean {
+    inside(p: BBox | Vector, tol = 0): boolean {
         return this.contains(p, tol)
     }
 
