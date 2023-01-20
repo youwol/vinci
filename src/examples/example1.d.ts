@@ -17,4 +17,4 @@
  * console.log( solution.stress(grid.series.positions) )
  * ```
  */
-export namespace Example_1 { }
+export namespace Example_1 {}

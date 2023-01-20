@@ -45,4 +45,4 @@
  * fs.writeFileSync('grid.ts', io.encodeGocadTS(grid), 'utf8', err => {})
  * ```
  */
-export namespace Example_2 { }
+export namespace Example_2 {}
