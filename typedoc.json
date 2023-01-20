@@ -1,4 +1,3 @@
-// typedoc.json
 {
     "$schema": "https://typedoc.org/schema.json",
     "entryPoints": ["./src/lib/index.ts", "./src/examples/index.ts"],
