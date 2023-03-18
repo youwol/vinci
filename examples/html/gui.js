@@ -333,7 +333,7 @@ function connectGui() {
             // surfaceInfo.points.show = value
             repaint()
         })
-    display.close()
+    // display.close()
 
     // =======================================
 
@@ -375,7 +375,7 @@ function connectGui() {
         .add(streamLines, 'maxTimePerIteration', 10, 100, 10)
         .onChange((value) => repaint())
     stream.close()
-    // stream.hide()
+    stream.hide()
 
     // =======================================
 
@@ -402,6 +402,9 @@ function connectGui() {
         .name('Normalize')
         .onChange((value) => repaint())
 
+    vectors.close()
+    vectors.hide()
+
     // =======================================
 
     const deform = gui.addFolder('Deform')
@@ -420,6 +423,7 @@ function connectGui() {
             repaint()
         })
     deform.close()
+    deform.hide()
 
     // =======================================
 
@@ -456,6 +460,7 @@ function connectGui() {
             repaint()
         })
     displayL.close()
+    // displayL.hide()
 
     // =======================================
 
@@ -537,6 +542,7 @@ function connectGui() {
         .listen()
 
     mohr.close()
+    mohr.hide()
 
     // ======================================
 
@@ -575,4 +581,7 @@ function connectGui() {
             repaint()
         })
         .listen()
+    
+    fringes.close()
+    fringes.hide()
 }

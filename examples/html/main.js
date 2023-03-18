@@ -17,11 +17,11 @@ models.set('Kink', buildFault([0, 0, 0, 1, 1, 0, 2, 1, 0, 3, 1, 0, 4, 2, 0]))
 models.set('Inclined', buildFault([0, 0, 0, 1, 1, 0, 2, 2, 0]))
 models.set(
     'Horizontal',
-    buildFault(new Array(15).fill(0).map((v, i) => (i % 3 === 0 ? i / 3 : 0))),
+    buildFault(new Array(15).fill(0).map((v, i) => i % 3 === 0 ? i / 3 : 0)),
 )
 models.set(
     'Vertical',
-    buildFault(new Array(15).fill(0).map((v, i) => (i % 3 === 0 ? 0 : i / 3))),
+    buildFault([0,0,0, 0,1,0, 0,2,0, 0,3,0]),
 )
 models.set('Wavy', buildFault([0, 0, 0, 1, 1, 0, 2, 0, 0, 3, 1, 0, 4, 0, 0]))
 models.set('Sinus', buildFault(sinus))
@@ -69,10 +69,10 @@ function buildFault(points) {
 
 function addFaultToModel(fault, vmodel, bcType) {
     function add(f) {
-        const builder = new vinci.FaultBuilder()
+        const builder = new vinci.FaultBuilder(vmodel)
         f.series.positions.forEach((p) => builder.addPoint(p))
         faults.push(f)
-        builder.setBcType(bcType).addTo(vmodel)
+        builder.setBcType(bcType).addToModel()
     }
     if (Array.isArray(fault)) {
         fault.forEach((f) => add(f))
@@ -176,6 +176,7 @@ function regenerateModel() {
     doSurface(grid, surfaceInfo)
 
     doLines(faults, faultParams)
+    console.log(faults)
 
     colorScale({
         element: 'color-scale',
@@ -186,7 +187,7 @@ function regenerateModel() {
         style: new Map([
             ['position', 'absolute'],
             ['left', '10px'],
-            ['top', '420px'],
+            ['top', '50px'],
         ]),
     })
 }

@@ -67,20 +67,25 @@ function init() {
     // controls.panSpeed = 0.8
     renderFct.add(controls.update)
 
-    cube = new extra.installNavigationCube(
-        new extra.NavigationCubeParameters({
-            scene,
-            camera,
-            renderer,
-            controls,
-            renderFunctions: renderFct, // will also add the cube in renderFct
-            labels: ['Right', 'Left', 'Up', 'Down', 'Front', 'Back'],
-            // labels: ['East', 'West', 'Up', 'Down', 'South', 'North'],
-            // labels: ['Y', '-Y', 'Z', '-Z', 'X', '-X'],
+    if (models.showCube) {
+        cube = new extra.installNavigationCube(
+            new extra.NavigationCubeParameters({
+                scene,
+                camera,
+                renderer,
+                controls,
+                renderFunctions: renderFct, // will also add the cube in renderFct
+                labels: ['Right', 'Left', 'Up', 'Down', 'Front', 'Back'],
+                // labels: ['East', 'West', 'Up', 'Down', 'South', 'North'],
+                // labels: ['Y', '-Y', 'Z', '-Z', 'X', '-X'],
 
-            domElement: document.getElementById('orientCubeWrapper'),
-            domHome: document.getElementById('goHome'),
-            domSaveHome: document.getElementById('saveHome'),
-        }),
-    )
+                domElement: document.getElementById('orientCubeWrapper'),
+                domHome: document.getElementById('goHome'),
+                domSaveHome: document.getElementById('saveHome'),
+            }),
+        )
+    } else {
+        document.getElementById('goHome').hidden = true
+        document.getElementById('saveHome').hidden = true
+    }
 }
