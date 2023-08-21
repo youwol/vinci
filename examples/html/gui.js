@@ -209,7 +209,7 @@ function connectGui() {
             repaint()
         })
 
-    mod.add(obj, 'gridSize', 1, 10, 0.5)
+    mod.add(obj, 'gridSize', 0.1, 10, 0.1)
         .name('Grid extend')
         .onChange((value) => {
             model.gridExtend = value
@@ -581,7 +581,7 @@ function connectGui() {
             repaint()
         })
         .listen()
-    
+
     fringes.close()
     fringes.hide()
 }

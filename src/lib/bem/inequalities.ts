@@ -11,7 +11,7 @@ import { Vector, Displ, Traction } from '../types'
  * @category Inequality
  */
 export interface Inequality {
-    do(enter: Vector): Vector
+    do(vec: Vector): Vector
 }
 
 /**
@@ -29,7 +29,7 @@ export type InequalityCB = (vector: Vector) => Vector
  * @category Inequality
  */
 export abstract class Tic implements Inequality {
-    abstract do(vector: Traction): Traction
+    abstract do(tract: Traction): Traction
 }
 
 /**
@@ -77,15 +77,12 @@ export class Coulomb extends Tic {
 
 // -----------------------------------------------
 
-/* eslint unused-imports/no-unused-vars: off -- need for doc*/
 /**
  * Base class for all inequality constraint in displacement
  * @category Inequality
  */
 export abstract class Dic implements Inequality {
-    do(enter: Displ): Displ {
-        return [0, 0]
-    }
+    abstract do(displ: Displ): Displ
 }
 
 /**
