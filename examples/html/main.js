@@ -122,7 +122,7 @@ function runModel(name, isDataframe = false) {
         addFaultToModel(f, vmodel, bc)
     }
 
-    console.log('nb dofs:', vmodel.dof)
+    // console.log('nb dofs:', vmodel.dof)
 
     const remote = new vinci.RotationalStress(S1, S2, theta)
     vmodel.addRemote(remote)

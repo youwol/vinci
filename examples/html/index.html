@@ -91,7 +91,7 @@
             </div>
         </div>
 
-        <div
+        <!-- <div
             class="top-1 start-1"
             style="position: absolute; opacity: 75%; left: 10px; top: 10px"
         >
@@ -118,7 +118,7 @@
                     background-color: rgb(193, 193, 193);
                 "
             ></div>
-        </div>
+        </div> -->
 
         <!-- <div id="color-scale" style='position: absolute; opacity: 100%; left: 0px; top: 420px'></div> -->
         <div id="color-scale"></div>
@@ -130,8 +130,8 @@
         <script type="text/javascript" src="./init.js"></script>
         <script type="text/javascript" src="./main.js"></script>
         <script type="text/javascript" src="./gui.js"></script>
-        <script type="text/javascript" src="./mohrCircle.js"></script>
-        <script type="text/javascript" src="./roseDiagram.js"></script>
+        <!-- <script type="text/javascript" src="./mohrCircle.js"></script> -->
+        <!-- <script type="text/javascript" src="./roseDiagram.js"></script> -->
         <script type="text/javascript" src="./colorScale.js"></script>
 
         <script>
@@ -207,33 +207,33 @@
 
             extra.changeView('up', { scene, camera, controls })
 
-            mohrCircle({
-                element: 'mohr',
-                width: 200,
-                height: 200,
-                S1: 2,
-                S2: 1,
-                S3: 0.5,
-                scale: 80,
-            })
+            // mohrCircle({
+            //     element: 'mohr',
+            //     width: 200,
+            //     height: 200,
+            //     S1: 2,
+            //     S2: 1,
+            //     S3: 0.5,
+            //     scale: 80,
+            // })
 
-            roseDiagram({
-                data: new Array(500).fill(0).map((v) => Math.random() * 180),
-                element: 'rose',
-                width: 200,
-                height: 200,
-                margin: {
-                    top: 10,
-                    right: 10,
-                    bottom: 10,
-                    left: 10,
-                },
-                innerR: 4,
-                binArc: 10,
-                colourFill: '#1d55cf',
-                gradTickSpacing: 7,
-                colourHover: 'purple',
-            })
+            // roseDiagram({
+            //     data: new Array(500).fill(0).map((v) => Math.random() * 180),
+            //     element: 'rose',
+            //     width: 200,
+            //     height: 200,
+            //     margin: {
+            //         top: 10,
+            //         right: 10,
+            //         bottom: 10,
+            //         left: 10,
+            //     },
+            //     innerR: 4,
+            //     binArc: 10,
+            //     colourFill: '#1d55cf',
+            //     gradTickSpacing: 7,
+            //     colourHover: 'purple',
+            // })
 
             requestAnimationFrame(animate) // general loop
         </script>
