@@ -69,10 +69,10 @@ function buildFault(points) {
 
 function addFaultToModel(fault, vmodel, bcType) {
     function add(f) {
-        const builder = new vinci.FaultBuilder()
+        const builder = new vinci.FaultBuilder(vmodel)
         f.series.positions.forEach((p) => builder.addPoint(p))
         faults.push(f)
-        builder.setBcType(bcType).addTo(vmodel)
+        builder.setBcType(bcType).addToModel()
     }
     if (Array.isArray(fault)) {
         fault.forEach((f) => add(f))
@@ -122,7 +122,7 @@ function runModel(name, isDataframe = false) {
         addFaultToModel(f, vmodel, bc)
     }
 
-    console.log('nb dofs:', vmodel.dof)
+    // console.log('nb dofs:', vmodel.dof)
 
     const remote = new vinci.RotationalStress(S1, S2, theta)
     vmodel.addRemote(remote)
